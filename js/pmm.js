@@ -47,6 +47,9 @@ function upd_group_list(data) {
 }
 
 
+VK.callMethod('resizeWindow', $("html").width(), $("html").height());  // изменение размера фрейма
+
+
 // ПОЛУЧЕНИЕ СПИСКА ЗАПИСЕЙ
 $(btnExec).click(function() {
     // блокировка кнопки выборки
