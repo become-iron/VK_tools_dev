@@ -88,7 +88,7 @@ $(btnExec).click(function() {
     );
 
     if (count > 100) {
-        _ = (id.length > 0) ? ('owner_id: ' + id) : ('domain: ' + domain);
+        _ = (id.length > 0) ? ('owner_id: ' + id) : ('domain: "' + domain + '"');
         var query = 'var posts;' +
             'var offset = ' + offset + ';' +
             'var tmpParam;' +
