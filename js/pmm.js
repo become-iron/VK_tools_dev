@@ -1,6 +1,6 @@
 // элементы страницы
 var selGroups = '#groups',
-    inpLink = '#link',
+    inpOwnerID = '#owner_id',
     btnExec = 'input#execute',
     selFilter = '#filter',
     //tblPosts = '.list-group',
@@ -41,7 +41,7 @@ function upd_group_list(data) {
     $(selGroups).empty();  // очищаем список
     for (var i = 0; i < groups.length; i++) {
         var group = groups[i];
-        options += '<option value="' + group['id'] + '">' + group['name'] + '</option>';
+        options += '<option value="-' + group['id'] + '">' + group['name'] + '</option>';
     }
     $(selGroups).append($( options ));
 }
@@ -55,11 +55,11 @@ $(btnExec).click(function() {
     // блокировка кнопки выборки
     $(btnExec).prop("disabled", true);
     $(btnExec).val('[ обновляется ]');
-    var link = $(inpLink).val(),
+    var ownerID = $(inpOwnerID).val(),
         count = Number($(inpCount).val()),  // количество записей для анализа
         offset = Number($(inpOffset).val()),  // смещение  для выборки записей
         filter = $(selFilter).val(),
-        id = link.length > 0 ? link : '-' + $(selGroups).val();
+        id = ownerID.length > 0 ? ownerID : $(selGroups).val();
     if (count > 100) {
         var query = 'var posts;' +
             'var offset = ' + offset + ';' +
@@ -107,7 +107,7 @@ function displayPosts(posts) {
     // ВЫВОД ПОСТОВ
     var countOut = Number($(inpCountOut).val()),
         typeOfSort = $(selSort).val(),  // вид сортировки
-        id = $(inpLink).val();
+        id = $(inpOwnerID).val();
     // определяем, откуда брать id: из выпадающего списка или поля
     id = id.length > 0 ? id : '-' + $(selGroups).val();
     console.log('Записи: ', posts);
@@ -257,7 +257,7 @@ function displayPosts(posts) {
 
 // очищение поля для ссылки при выборе группы из выпад. списка
 $(selGroups).change(function() {
-    $(inpLink).val('');
+    $(inpOwnerID).val('');
 });
 
 function isError(data) {
