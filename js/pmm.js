@@ -69,6 +69,7 @@ $(btnExec).click(function() {
         }
         else {
             var _ = ownerInfo.search('vk.com/');
+            console.log(_);
             if (_ != -1) {
                 owner = ownerInfo.slice(_ + 7);
             }
