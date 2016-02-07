@@ -61,7 +61,7 @@ $(btnExec).click(function() {
         offset = Number($(inpOffset).val()),  // смещение  для выборки записей
         filter = $(selFilter).val(),
         id = '',
-        owner = '';
+        domain = '';
     //id = ownerInfo.length > 0 ? (ownerInfo.search(/-?[0-9]*/) != -1 ? ownerInfo : (ownerInfo.search('vk.com/') != -1 ? ownerInfo.slice(ownerInfo.search('vk.com/') + 7) : ownerInfo)) : $(selGroups).val();
     if (ownerInfo.length > 0) {
         if (ownerInfo.search(/-?[0-9]*/) != -1) {
@@ -71,10 +71,10 @@ $(btnExec).click(function() {
             var _ = ownerInfo.search('vk.com/');
             console.log(_);
             if (_ != -1) {
-                owner = ownerInfo.slice(_ + 7);
+                domain = ownerInfo.slice(_ + 7);
             }
             else {
-                owner = ownerInfo;
+                domain = ownerInfo;
             }
         }
     }
@@ -84,7 +84,7 @@ $(btnExec).click(function() {
 
 
     if (count > 100) {
-        _ = (id.length > 0) ? ('owner_id: ' + id) : ('owner: ' + owner);
+        _ = (id.length > 0) ? ('owner_id: ' + id) : ('domain: ' + domain);
         var query = 'var posts;' +
             'var offset = ' + offset + ';' +
             'var tmpParam;' +
@@ -116,9 +116,10 @@ $(btnExec).click(function() {
         );
     }
     else {
+        var params = (id.length > 0) ? {owner_id: id, count: count, filter: filter, offset: offset} : {domain: domain, count: count, filter: filter, offset: offset};
         VK.api(
             'wall.get',
-            {owner_id: id, count: count, filter: filter, offset: offset},
+            params,
             function(data) {
                 if (isError(data)) return;
                 displayPosts(data.response.items);
