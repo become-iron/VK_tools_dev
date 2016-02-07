@@ -120,7 +120,7 @@ $(btnExec).click(function() {
             'wall.get',
             {owner_id: id, count: count, filter: filter, offset: offset},
             function(data) {
-                if (isError(posts)) return;
+                if (isError(data)) return;
                 displayPosts(data.response.items);
             }
         );
