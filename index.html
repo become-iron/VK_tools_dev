@@ -40,18 +40,18 @@
         <div class="col-xs-offset-1 col-xs-10">
             <select id="groups" class="form-control input-sm"></select>
             <div class="input-group" style="margin-top: 7px;">
-                <input type="text" id="owner_id" class="form-control" placeholder="ID профиля/группы">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" id="resetLink" onclick="$(inpOwnerID).val('')">Сбросить</button>
+                <input type="text" id="groupID" class="form-control" placeholder="ID/ссылка пользователя/сообщества">
+                <span class="input-group-btn" title="Сбросить поле">
+                    <button class="btn btn-default" type="button" onclick="$(inpOwner).val('')">Сбросить</button>
                 </span>
             </div>
             <!--<div class="input-group" style="margin-top: 7px;">-->
-                <!--<input type="text" id="domain" class="form-control" placeholder="ID профиля/группы">-->
-                <!--<span class="input-group-btn">-->
-                    <!--<button class="btn btn-default" type="button" id="resetLink" onclick="$(inpOwnerID).val('')">Сбросить</button>-->
+                <!--<input type="text" id="domain" class="form-control" placeholder="Адрес пользователя/сообщества">-->
+                <!--<span class="input-group-btn" title="Сбросить поле">-->
+                    <!--<button class="btn btn-default" type="button" id="resetLink" onclick="$(inpDomain).val('')">Сбросить</button>-->
                 <!--</span>-->
             <!--</div>-->
-            <p class="help-block">Выберите группу или вставьте ID профиля/группы. ID группы должен начинаться с "-"</p>
+            <p class="help-block">Выберите группу или вставьте ID профиля/группы.<br>ID группы должен начинаться с "-"</p>
         </div>
     </div>
     <div class="form-group">

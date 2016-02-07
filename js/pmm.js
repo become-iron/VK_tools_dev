@@ -1,9 +1,9 @@
 // элементы страницы
 var selGroups = '#groups',
-    inpOwnerID = '#owner_id',
+    inpOwner = '#groupID',
+    //inpDomain = '#domain',
     btnExec = 'input#execute',
     selFilter = '#filter',
-    //tblPosts = '.list-group',
     tblPosts = "#posts",
     inpCount = '#count',
     inpCountOut = '#countOut',
@@ -11,6 +11,7 @@ var selGroups = '#groups',
     selSort = '#sort';
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
+var req = /-?[0-9]*/;
 
 // ИНИЦИАЛИЗАЦИЯ API
 var apiVersion = '5.44';
@@ -55,20 +56,41 @@ $(btnExec).click(function() {
     // блокировка кнопки выборки
     $(btnExec).prop("disabled", true);
     $(btnExec).val('[ обновляется ]');
-    var ownerID = $(inpOwnerID).val(),
+    var ownerInfo = $(inpOwner).val(),
         count = Number($(inpCount).val()),  // количество записей для анализа
         offset = Number($(inpOffset).val()),  // смещение  для выборки записей
         filter = $(selFilter).val(),
-        id = ownerID.length > 0 ? ownerID : $(selGroups).val();
+        id = '',
+        owner = '';
+    //id = ownerInfo.length > 0 ? (ownerInfo.search(/-?[0-9]*/) != -1 ? ownerInfo : (ownerInfo.search('vk.com/') != -1 ? ownerInfo.slice(ownerInfo.search('vk.com/') + 7) : ownerInfo)) : $(selGroups).val();
+    if (ownerInfo.length > 0) {
+        if (ownerInfo.search(/-?[0-9]*/) != -1) {
+            id = ownerInfo;
+        }
+        else {
+            var _ = ownerInfo.search('vk.com/');
+            if (_ != -1) {
+                owner = ownerInfo.slice(_ + 7);
+            }
+            else {
+                owner = ownerInfo;
+            }
+        }
+    }
+    else {
+        id = $(selGroups).val();
+    }
+
+
     if (count > 100) {
+        _ = (id.length > 0) ? ('owner_id: ' + id) : ('owner: ' + owner);
         var query = 'var posts;' +
             'var offset = ' + offset + ';' +
-            'var id = ' + id + ';' +
             'var tmpParam;' +
             'var countPosts;' +  // количество записей на стене
             'var countQuery = 0;' +  // количество выполненных запросов к api (ограничение в 25)
             'var count = ' + count + ';' +
-            'tmpParam = API.wall.get({owner_id: id, count: 100, offset: offset, filter: "' + filter + '"});' +
+            'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
             'posts = tmpParam.items;' +
             'countPosts = tmpParam.count;' +
             'if (countPosts <= 100) {' +
@@ -76,7 +98,7 @@ $(btnExec).click(function() {
             '}' +
             'offset = offset + 100;' +
             'while(posts.length < count && countQuery < 24) {' +
-            'tmpParam = API.wall.get({owner_id: id, count: 100, offset: offset, filter: "' + filter + '"});' +
+            'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
             'posts = posts + tmpParam.items;' +
             'if (tmpParam.count < 100) {return posts;}' +
             'countQuery = countQuery + 1;' +
@@ -106,10 +128,7 @@ $(btnExec).click(function() {
 function displayPosts(posts) {
     // ВЫВОД ПОСТОВ
     var countOut = Number($(inpCountOut).val()),
-        typeOfSort = $(selSort).val(),  // вид сортировки
-        id = $(inpOwnerID).val();
-    // определяем, откуда брать id: из выпадающего списка или поля
-    id = id.length > 0 ? id : '-' + $(selGroups).val();
+        typeOfSort = $(selSort).val();  // вид сортировки
     console.log('Записи: ', posts);
     if (isError(posts)) return;
     $(tblPosts).empty();
@@ -151,7 +170,7 @@ function displayPosts(posts) {
             // заменяем ссылке в тексте на реальные, добавляем переносы строк
             var text = posts[j].text
                 .replace(reLink, function(s){
-                    var str = (/:\/\//.exec(s) === null ? "http://" + s : s );
+                    var str = (/:\/\//.exec(s) === null ? "http://" + s : s );  // CHECK
                     return '<a href="'+ str + '">' + s + '</a>';
                 })
                 .replace(/\n/g, '<br>');
@@ -240,7 +259,7 @@ function displayPosts(posts) {
                         '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + posts[j].speed +
                     '</button>' +
                     '<span title="Дата создания записи" class="action">' + date + '</span>' +
-                    '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + id + '_' + posts[j].id + '" target="_blank" role="button">' +
+                    '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + posts[j].from_id + '_' + posts[j].id + '" target="_blank" role="button">' +
                         'Перейти к записи' +
                     '</a>' +
                 '</p>' +
@@ -257,7 +276,7 @@ function displayPosts(posts) {
 
 // очищение поля для ссылки при выборе группы из выпад. списка
 $(selGroups).change(function() {
-    $(inpOwnerID).val('');
+    $(inpOwner).val('');
 });
 
 function isError(data) {
