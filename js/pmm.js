@@ -64,7 +64,7 @@ $(btnExec).click(function() {
         domain = '';
     //id = ownerInfo.length > 0 ? (ownerInfo.search(/-?[0-9]*/) != -1 ? ownerInfo : (ownerInfo.search('vk.com/') != -1 ? ownerInfo.slice(ownerInfo.search('vk.com/') + 7) : ownerInfo)) : $(selGroups).val();
     if (ownerInfo.length > 0) {
-        if (ownerInfo.search(/-?[0-9]*/) != -1) {
+        if (ownerInfo.search(/-?[0-9]*/) == -1) {
             id = ownerInfo;
         }
         else {
