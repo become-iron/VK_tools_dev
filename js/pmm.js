@@ -11,7 +11,6 @@ var selGroups = '#groups',
     selSort = '#sort';
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
-var req = /-?[0-9]*/;
 
 // ИНИЦИАЛИЗАЦИЯ API
 var apiVersion = '5.44';
@@ -62,14 +61,12 @@ $(btnExec).click(function() {
         filter = $(selFilter).val(),
         id = '',
         domain = '';
-    //id = ownerInfo.length > 0 ? (ownerInfo.search(/-?[0-9]*/) != -1 ? ownerInfo : (ownerInfo.search('vk.com/') != -1 ? ownerInfo.slice(ownerInfo.search('vk.com/') + 7) : ownerInfo)) : $(selGroups).val();
     if (ownerInfo.length > 0) {
-        if (ownerInfo.search(/-?[0-9]/) != -1) {
+        if (ownerInfo.search(/^-?[0-9]+$/) != -1) {
             id = ownerInfo;
         }
         else {
             var _ = ownerInfo.search('vk.com/');
-            console.log(_);
             if (_ != -1) {
                 domain = ownerInfo.slice(_ + 7);
             }
@@ -81,35 +78,30 @@ $(btnExec).click(function() {
     else {
         id = $(selGroups).val();
     }
-    console.log(
-        'ownerInfo: ', ownerInfo,
-        'id: ', id,
-        'domain: ', domain
-    );
 
     if (count > 100) {
         _ = (id.length > 0) ? ('owner_id: ' + id) : ('domain: "' + domain + '"');
         var query = 'var posts;' +
-            'var offset = ' + offset + ';' +
-            'var tmpParam;' +
-            'var countPosts;' +  // количество записей на стене
-            'var countQuery = 0;' +  // количество выполненных запросов к api (ограничение в 25)
-            'var count = ' + count + ';' +
-            'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
-            'posts = tmpParam.items;' +
-            'countPosts = tmpParam.count;' +
-            'if (countPosts <= 100) {' +
-            'return posts;' +
-            '}' +
-            'offset = offset + 100;' +
-            'while(posts.length < count && countQuery < 24) {' +
-            'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
-            'posts = posts + tmpParam.items;' +
-            'if (tmpParam.count < 100) {return posts;}' +
-            'countQuery = countQuery + 1;' +
-            'offset = offset + 100;' +
-            '}' +
-            'return posts;';
+                    'var offset = ' + offset + ';' +
+                    'var tmpParam;' +
+                    'var countPosts;' +  // количество записей на стене
+                    'var countQuery = 0;' +  // количество выполненных запросов к api (ограничение в 25)
+                    'var count = ' + count + ';' +
+                    'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
+                    'posts = tmpParam.items;' +
+                    'countPosts = tmpParam.count;' +
+                    'if (countPosts <= 100) {' +
+                    'return posts;' +
+                    '}' +
+                    'offset = offset + 100;' +
+                    'while(posts.length < count && countQuery < 24) {' +
+                    'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
+                    'posts = posts + tmpParam.items;' +
+                    'if (tmpParam.count < 100) {return posts;}' +
+                    'countQuery = countQuery + 1;' +
+                    'offset = offset + 100;' +
+                    '}' +
+                    'return posts;';
         console.log('execute-запрос: ', query);
         VK.api(
             'execute',
