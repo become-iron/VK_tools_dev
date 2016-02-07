@@ -47,7 +47,7 @@ function upd_group_list(data) {
 }
 
 
-VK.callMethod('resizeWindow', $("html").width(), $("html").height());  // изменение размера фрейма
+VK.callMethod('resizeWindow', 630, $("html").height());  // изменение размера фрейма
 
 
 // ПОЛУЧЕНИЕ СПИСКА ЗАПИСЕЙ
@@ -251,7 +251,7 @@ function displayPosts(posts) {
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
-    VK.callMethod('resizeWindow', $("html").width(), $("html").height());  // изменение размера фрейма
+    VK.callMethod('resizeWindow', 630, $("html").height());  // изменение размера фрейма
 }
 
 
