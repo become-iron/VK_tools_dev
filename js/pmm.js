@@ -81,7 +81,11 @@ $(btnExec).click(function() {
     else {
         id = $(selGroups).val();
     }
-    console.log(ownerInfo, id, domain);
+    console.log(
+        'ownerInfo: ', ownerInfo,
+        'id: ', id,
+        'domain: ', domain
+    );
 
     if (count > 100) {
         _ = (id.length > 0) ? ('owner_id: ' + id) : ('domain: ' + domain);
