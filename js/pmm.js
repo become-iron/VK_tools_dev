@@ -1,14 +1,14 @@
 // элементы страницы
 var selGroups = '#groups',
     inpOwner = '#groupID',
-    //inpDomain = '#domain',
     btnExec = 'input#execute',
     selFilter = '#filter',
-    tblPosts = "#posts",
+    divPosts = "#posts",
     inpCount = '#count',
     inpCountOut = '#countOut',
     inpOffset = '#offset',
-    selSort = '#sort';
+    selSort = '#sort',
+    chbIsContent = '#isContent';
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
 
@@ -46,9 +46,7 @@ function upd_group_list(data) {
     $(selGroups).append($( options ));
 }
 
-
 VK.callMethod('resizeWindow', 630, $("html").height());  // изменение размера фрейма
-
 
 // ПОЛУЧЕНИЕ СПИСКА ЗАПИСЕЙ
 $(btnExec).click(function() {
@@ -112,7 +110,9 @@ $(btnExec).click(function() {
         );
     }
     else {
-        var params = (id.length > 0) ? {owner_id: id, count: count, filter: filter, offset: offset} : {domain: domain, count: count, filter: filter, offset: offset};
+        var params = (id.length > 0)
+                     ? {owner_id: id, count: count, filter: filter, offset: offset}
+                     : {domain: domain, count: count, filter: filter, offset: offset};
         VK.api(
             'wall.get',
             params,
@@ -127,10 +127,11 @@ $(btnExec).click(function() {
 function displayPosts(posts) {
     // ВЫВОД ПОСТОВ
     var countOut = Number($(inpCountOut).val()),
-        typeOfSort = $(selSort).val();  // вид сортировки
+        typeOfSort = $(selSort).val(),  // вид сортировки
+        isContent = $(chbIsContent).prop("checked");
     console.log('Записи: ', posts);
     if (isError(posts)) return;
-    $(tblPosts).empty();
+    $(divPosts).empty();
     if (posts.length == 0) {
         alert('Записей не найдено');
         return;
@@ -179,7 +180,7 @@ function displayPosts(posts) {
                 '</p>'
         }
         // если имеются прикрепления
-        if (posts[j].attachments) {
+        if (posts[j].attachments && isContent) {
             // списки с каждым типом прикреплений
             // TODO другие виды прикреплений
             var listPhoto = posts[j].attachments.filter(function(attach) {
@@ -265,7 +266,7 @@ function displayPosts(posts) {
             '</div>' +
             '</div>';
     }
-    $(tblPosts).append($( code ));
+    $(divPosts).append($( code ));
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
