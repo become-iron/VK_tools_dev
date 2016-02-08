@@ -250,7 +250,7 @@ function displayPosts(posts) {
         // конец записи
         code += '<p class="list-group-item">' +
                     '<button title="Мне нравится" class="btn action" type="button" disabled="disabled">' +
-                        'Мне нравится <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ' + posts[j].likes.count +
+                        '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ' + posts[j].likes.count +
                     '</button>' +
                     '<button title="Поделиться" class="btn action" type="button" disabled="disabled">' +
                         '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> ' + posts[j].reposts.count +
