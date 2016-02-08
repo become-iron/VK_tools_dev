@@ -287,6 +287,9 @@ function isError(data) {
         var txtError = data.error['error_code'] + ' ' + data.error['error_msg'];
         alert('Произошла ошибка: ' + txtError);
         console.error(txtError, data);
+        // разблокировка кнопки выборки
+        $(btnExec).val('Произвести выборку');
+        $(btnExec).prop("disabled", false);
         return 1;
     }
     else {return 0}
