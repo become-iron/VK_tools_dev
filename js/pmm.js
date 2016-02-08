@@ -166,7 +166,7 @@ function displayPosts(posts) {
             '<div class="panel panel-default">' +
             '<div class="list-group">';
         // если имеется текст
-        if (posts[j].text.length > 0) {
+        if (posts[j].text.length > 0 && isContent) {
             // заменяем ссылке в тексте на реальные, добавляем переносы строк
             var text = posts[j].text
                 .replace(reLink, function(s){
