@@ -258,6 +258,8 @@ function displayPosts(posts) {
                     '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
                         '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + posts[j].speed +
                     '</button>' +
+                '</p>' +
+                '<p class="list-group-item">' +
                     '<span title="Дата создания записи" class="action">' + date + '</span>' +
                     '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + posts[j].from_id + '_' + posts[j].id + '" target="_blank" role="button">' +
                         'Перейти к записи' +
