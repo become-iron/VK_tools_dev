@@ -1,36 +1,17 @@
 // элементы страницы
-var selGroups = '#groups',
-    inpOwner = '#groupID',
-    btnExec = 'input#execute',
-    selFilter = '#filter',
-    divPosts = "#posts",
-    inpCount = '#count',
-    inpCountOut = '#countOut',
-    inpOffset = '#offset',
-    selSort = '#sort',
-    chbIsContent = '#isContent';
+var selGroups = '#groups';
+var inpOwner = '#groupID';
+var btnExec = 'input#execute';
+var selFilter = '#filter';
+var divPosts = "#posts";
+var inpCount = '#count';
+var inpCountOut = '#countOut';
+var inpOffset = '#offset';
+var selSort = '#sort';
+var chbIsContent = '#isContent';
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
 
-// ИНИЦИАЛИЗАЦИЯ API
-var apiVersion = '5.44';
-
-VK.init(on_success, on_fail, apiVersion);
-
-function on_success() {
-    console.log('Инициализация прошла успешно');
-    // получаем список групп юзера
-    VK.api(
-        'groups.get',
-        {filter: 'groups, publics, events', extended: 1},
-        upd_group_list
-    )
-}
-
-function on_fail() {
-    alert('Произошла ошибка инициализации API');
-    console.error('Произошла ошибка инициализации API');
-}
 
 function upd_group_list(data) {
     console.log('Группы: ', data);
@@ -46,19 +27,20 @@ function upd_group_list(data) {
     $(selGroups).append($( options ));
 }
 
-VK.callMethod('resizeWindow', 630, $("html").height());  // изменение размера фрейма
 
 // ПОЛУЧЕНИЕ СПИСКА ЗАПИСЕЙ
 $(btnExec).click(function() {
     // блокировка кнопки выборки
     $(btnExec).prop("disabled", true);
     $(btnExec).val('[ обновляется ]');
-    var ownerInfo = $(inpOwner).val(),
-        count = Number($(inpCount).val()),  // количество записей для анализа
-        offset = Number($(inpOffset).val()),  // смещение  для выборки записей
-        filter = $(selFilter).val(),
-        id = '',
-        domain = '';
+
+    var ownerInfo = $(inpOwner).val();
+    var count = Number($(inpCount).val());  // количество записей для анализа
+    var offset = Number($(inpOffset).val());  // смещение  для выборки записей
+    var filter = $(selFilter).val();
+    var id = '';
+    var domain = '';
+
     if (ownerInfo.length > 0) {
         if (ownerInfo.search(/^-?[0-9]+$/) != -1) {
             id = ownerInfo;
@@ -109,6 +91,9 @@ $(btnExec).click(function() {
             }
         );
     }
+    else if (count > 2500) {
+        // TEMP дописать
+    }
     else {
         var params = (id.length > 0)
                      ? {owner_id: id, count: count, filter: filter, offset: offset}
@@ -126,9 +111,10 @@ $(btnExec).click(function() {
 
 function displayPosts(posts) {
     // ВЫВОД ПОСТОВ
-    var countOut = Number($(inpCountOut).val()),
-        typeOfSort = $(selSort).val(),  // вид сортировки
-        isContent = $(chbIsContent).prop("checked");
+    var countOut = Number($(inpCountOut).val());
+    var typeOfSort = $(selSort).val();  // вид сортировки
+    var isContent = $(chbIsContent).prop("checked");
+
     console.log('Записи: ', posts);
     if (isError(posts)) return;
     $(divPosts).empty();
@@ -211,7 +197,7 @@ function displayPosts(posts) {
                             break;
                         }
                     }
-                    code += '<div class="col-xs-2"><a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo.photo_130 ? photo.photo_130 : photo.photo_75) + '" width="auto" height="75"></a></div>';
+                    code += '<div class="col-xs-2"><a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo.photo_130 ? photo.photo_130 : photo.photo_75) + '" width="auto" height="70"></a></div>';
                 }
                 // конец блока
                 code += '</div></div>';
@@ -272,7 +258,7 @@ function displayPosts(posts) {
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
-    VK.callMethod('resizeWindow', 630, $("html").height());  // изменение размера фрейма
+    resize_frame();
 }
 
 
@@ -302,9 +288,9 @@ function sort_RevByLikes(a, b) {
 }
 
 function sort_RevByReposts(a, b) {
-if (a.reposts.count < b.reposts.count) return 1;
-else if (a.reposts.count > b.reposts.count) return -1;
-else return 0;
+    if (a.reposts.count < b.reposts.count) return 1;
+    else if (a.reposts.count > b.reposts.count) return -1;
+    else return 0;
 }
 
 function sort_RevBySpeed(a, b) {
