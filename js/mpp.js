@@ -98,9 +98,9 @@ $(btnExec).click(function() {
             }
         );
     }
-    else if (count > 2500) {
+    // else if (count > 2500) {
         // TEMP дописать
-    }
+    // }
     else {
         var params = (id.length > 0)
                      ? {owner_id: id, count: count, filter: filter, offset: offset}
@@ -110,7 +110,8 @@ $(btnExec).click(function() {
             params,
             function(data) {
                 if (isError(data)) return;
-                displayPosts(data.response.items);
+                posts = data.response.items;
+                displayPosts();
             }
         );
     }
