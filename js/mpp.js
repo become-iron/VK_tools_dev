@@ -20,7 +20,6 @@ var isContent;
 
 
 function upd_group_list(data) {
-    console.log('Группы: ', data);
     if (isError(data)) return;
     var groups = data['response']['items'];
     // добавляем группы в выпадающий список
@@ -88,7 +87,7 @@ $(btnExec).click(function() {
                     'offset = offset + 100;' +
                     '}' +
                     'return posts;';
-        console.log('execute-запрос: ', query);
+        // console.log('execute-запрос: ', query);
         VK.api(
             'execute',
             {code: query},
@@ -147,11 +146,11 @@ function displayPosts() {
         posts.sort(sort_RevBySpeed);
     }
     // выборка записей
-    posts = posts.slice(0, countOut);
+    // posts = posts.slice(0, countOut);
     console.log('На вывод: ', posts);
     var code = '';
-    for (var j = 0; j < posts.length; j++) {
-        code += make_post(posts[j], isContent)
+    for (var j = 0; j < countOut; j++) {
+        code += make_post(posts[j])
     }
     
     $(divPosts).append($( code ));
@@ -168,7 +167,6 @@ function make_post(post) {
     var code = '';
 
     // составление даты записи
-    // console.log('post: ', post);
     var date = new Date(post.date * 1000),
         minutes = (String(date.getMinutes()).length == 1) ? '0' + date.getMinutes() : date.getMinutes();
     date = date.getDate() + '.' + (Number(date.getMonth()) + 1)  + '.' + date.getFullYear()  + ' ' + date.getHours()  + ':' + minutes;
@@ -206,7 +204,7 @@ function make_post(post) {
 
 
         if (listPhoto.length > 0) {
-            console.log('Изображения: ', listPhoto);
+            // console.log('Изображения: ', listPhoto);
             // начало блока
             code += '<div class="list-group-item"><div class="row">';
             for (var k = 0; k < listPhoto.length; k++) {
@@ -226,7 +224,7 @@ function make_post(post) {
             code += '</div></div>';
         }
         if (listAudio.length > 0) {
-            console.log('Аудио: ', listAudio);
+            // console.log('Аудио: ', listAudio);
             // начало блока
             code += '<div class="list-group-item">';
             for (k = 0; k < listAudio.length; k++) {
@@ -290,7 +288,6 @@ $(btnAddPosts).click( function () {
     countOut += 1;
     var code = '';
     for (var i = 0; i < 10; i++) {
-        console.log(countOut, posts[countOut]);
         code += make_post(posts[countOut]);
         if (posts.length == countOut) {
             $(btnAddPosts).css('display', 'none');
