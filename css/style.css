@@ -24,7 +24,8 @@
     margin-top: 1px;
 }
 
-#add_posts {
+#btn_add_posts {
     margin-top: -5px;
     margin-bottom: 10px;
+    display: none;
 }

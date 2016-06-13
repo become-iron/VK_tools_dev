@@ -10,73 +10,76 @@
 <body>
 <div class="container">
 
-<form class="form-horizontal">
-    <div class="form-group">
-        <div class="col-xs-offset-1 col-xs-10">
-            <select id="groups" class="form-control input-sm"></select>
-            <div class="input-group" style="margin-top: 7px;">
-                <input type="text" id="groupID" class="form-control" placeholder="ID/ссылка пользователя/сообщества">
-                <span class="input-group-btn" title="Сбросить поле">
-                    <button class="btn btn-default" type="button" onclick="$(inpOwner).val('')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                </span>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <div class="col-xs-offset-1 col-xs-10">
+                <select id="groups" class="form-control input-sm"></select>
+                <div class="input-group" style="margin-top: 7px;">
+                    <input type="text" id="groupID" class="form-control" placeholder="ID/ссылка пользователя/сообщества">
+                    <span class="input-group-btn" title="Сбросить поле">
+                        <button class="btn btn-default" type="button" onclick="$(inpOwner).val('')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    </span>
+                </div>
+                <p class="help-block">
+                    Выберите сообщество из списка или вставьте в поле ID/адрес профиля/сообщества. ID сообщества должен начинаться с "-"<br>Например: 123456, -654321, http://vk.com/vku, apiclub
+                </p>
             </div>
-            <p class="help-block">
-                Выберите сообщество из списка или вставьте в поле ID/адрес профиля/сообщества. ID сообщества должен начинаться с "-"<br>Например: 123456, -654321, http://vk.com/vku, apiclub
-            </p>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="count" class="col-xs-offset-1 col-xs-5 control-label">Количество записей для поиска (до 2500)</label>
-        <div class="col-xs-5">
-            <input type="number" id="count" value="100" min="1" max="2500" step="1" class="form-control input-sm">
+        <div class="form-group">
+            <label for="count" class="col-xs-offset-1 col-xs-5 control-label">Количество записей для поиска (до 2500)</label>
+            <div class="col-xs-5">
+                <input type="number" id="count" value="100" min="1" max="2500" step="1" class="form-control input-sm">
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="countOut" class="col-xs-offset-1 col-xs-5 control-label">Количество записей для вывода</label>
-        <div class="col-xs-5">
-            <input type="number" id="countOut" value="10" min="1" max="2500" step="1" class="form-control input-sm">
+        <div class="form-group">
+            <label for="countOut" class="col-xs-offset-1 col-xs-5 control-label">Количество записей для вывода</label>
+            <div class="col-xs-5">
+                <input type="number" id="countOut" value="10" min="1" max="2500" step="1" class="form-control input-sm">
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="countOut" class="col-xs-offset-1 col-xs-5 control-label">Смещение, необходимое для выборки записей</label>
-        <div class="col-xs-5">
-            <input type="number" id="offset" value="0" min="0" max="2499" step="1" class="form-control input-sm">
+        <div class="form-group">
+            <label for="countOut" class="col-xs-offset-1 col-xs-5 control-label">Смещение, необходимое для выборки записей</label>
+            <div class="col-xs-5">
+                <input type="number" id="offset" value="0" min="0" max="2499" step="1" class="form-control input-sm">
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="filter" class="col-xs-offset-1 col-xs-5 control-label">Фильтр</label>
-        <div class="col-xs-5">
-            <select id="filter" class="form-control input-sm">
-                <option value="owner">записи на стене от ее владельца</option>
-                <option value="all">все записи на стене</option>
-                <option value="others">записи на стене не от ее владельца</option>
-            </select>
+        <div class="form-group">
+            <label for="filter" class="col-xs-offset-1 col-xs-5 control-label">Фильтр</label>
+            <div class="col-xs-5">
+                <select id="filter" class="form-control input-sm">
+                    <option value="owner">записи на стене от ее владельца</option>
+                    <option value="all">все записи на стене</option>
+                    <option value="others">записи на стене не от ее владельца</option>
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="filter" class="col-xs-offset-1 col-xs-5 control-label">Сортировка</label>
-        <div class="col-xs-5">
-            <select id="sort" class="form-control input-sm">
-                <option value="byLikes">по количеству лайков</option>
-                <option value="byReposts">по количеству репостов</option>
-                <option value="bySpeed">по скорости набора лайков (1/день)</option>
-            </select>
+        <div class="form-group">
+            <label for="filter" class="col-xs-offset-1 col-xs-5 control-label">Сортировка</label>
+            <div class="col-xs-5">
+                <select id="sort" class="form-control input-sm">
+                    <option value="byLikes">по количеству лайков</option>
+                    <option value="byReposts">по количеству репостов</option>
+                    <option value="bySpeed">по скорости набора лайков (1/день)</option>
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="isContent" class="col-xs-offset-1 col-xs-5 control-label" title="Отображать текст записи и прикрепления">Отображать контент записей</label>
-        <div class="col-xs-5">
-            <input type="checkbox" id="isContent" checked>
+        <div class="form-group">
+            <label for="isContent" class="col-xs-offset-1 col-xs-5 control-label" title="Отображать текст записи и прикрепления">Отображать контент записей</label>
+            <div class="col-xs-5">
+                <input type="checkbox" id="isContent" checked>
+            </div>
         </div>
-    </div>
+
+        <div class="form-group">
+            <input type="button" value="Произвести выборку" id="execute" class="col-xs-offset-3 col-xs-6 btn btn-primary btn-sm">
+        </div>
+    </form>
+
+    <div id="posts"></div>
 
     <div class="form-group">
-        <input type="button" value="Произвести выборку" id="execute" class="col-xs-offset-3 col-xs-6 btn btn-primary btn-sm">
+        <input type="button" value="Ещё 10 постов" id="btn_add_posts" class="col-xs-offset-2 col-xs-8 btn btn-default btn-sm">
     </div>
-</form>
-
-<div id="posts"></div>
-
 </div>
 </body>
 <script src="//vk.com/js/api/xd_connection.js?2" type="text/javascript"></script>  <!--JS SDK для VK-->

@@ -3,14 +3,20 @@ var selGroups = '#groups';
 var inpOwner = '#groupID';
 var btnExec = 'input#execute';
 var selFilter = '#filter';
-var divPosts = "#posts";
-var inpCount = '#count';
-var inpCountOut = '#countOut';
-var inpOffset = '#offset';
+var divPosts = "#posts";  // контейнер для постов
+var inpCount = '#count';  // количество записи для поиска
+var inpCountOut = '#countOut';  // количество записей для вывода
+var inpOffset = '#offset';  // смещение записей
 var selSort = '#sort';
 var chbIsContent = '#isContent';
+var btnAddPosts = '#btn_add_posts';
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
+
+var posts;
+var countOut;
+var typeOfSort;
+var isContent;
 
 
 function upd_group_list(data) {
@@ -87,7 +93,8 @@ $(btnExec).click(function() {
             'execute',
             {code: query},
             function(data) {
-                displayPosts(data.response);
+                posts = data.response;
+                displayPosts();
             }
         );
     }
@@ -109,10 +116,11 @@ $(btnExec).click(function() {
     }
 });
 
-function displayPosts(posts) {
+function displayPosts() {
     // ВЫВОД ПОСТОВ
-    var countOut = Number($(inpCountOut).val());
-    var typeOfSort = $(selSort).val();  // вид сортировки
+    countOut = Number($(inpCountOut).val());
+    typeOfSort = $(selSort).val();  // вид сортировки
+    isContent = $(chbIsContent).prop("checked");  // необходимость показа прикреплений
 
     console.log('Записи: ', posts);
     if (isError(posts)) return;
@@ -142,32 +150,20 @@ function displayPosts(posts) {
     console.log('На вывод: ', posts);
     var code = '';
     for (var j = 0; j < posts.length; j++) {
-        code += make_post(posts[j])
+        code += make_post(posts[j], isContent)
     }
-
-    // кнопка открытия дополнительных постов
-    code += '<button id="btn_add_posts" class="col-xs-offset-2 col-xs-8 btn btn-default btn-sm">Ещё 10 постов</button>';
-
+    
     $(divPosts).append($( code ));
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
+    $(btnAddPosts).prop('display', 'inline-block');
     resize_frame();
 }
 
 
-// очищение поля для ссылки при выборе группы из выпад. списка
-$(selGroups).change(function() {
-    $(inpOwner).val('');
-});
-
-// $('#btn_add_posts').click( function () {
-//     $(divPosts).append()
-// });
-
 function make_post(post) {
     // СОЗДАНИЕ HTML-КОДА ДЛЯ ПОСТА
-    var isContent = $(chbIsContent).prop("checked");
     var code = '';
 
     // составление даты записи
@@ -280,6 +276,28 @@ function make_post(post) {
         '</div>';
     return code;
 }
+
+// очищение поля для ссылки при выборе группы из выпад. списка
+$(selGroups).change(function() {
+    $(inpOwner).val('');
+});
+
+
+// кнопка отображения дополнительных постов
+$(btnAddPosts).click( function () {
+    countOut += 1;
+    var code = '';
+    for (var i = 0; i < 10; i++) {
+        code += make_post(countOut);
+        if (posts.length == countOut) {
+            $(btnAddPosts).prop('display', 'none');
+            break;
+        }
+    }
+    $(divPosts).append(code);
+    resize_frame();
+});
+
 
 function isError(data) {
     // ПРОВЕРКА НА ОШИБКУ
