@@ -168,7 +168,7 @@ function make_post(post) {
     var code = '';
 
     // составление даты записи
-    console.log('post: ', post);
+    // console.log('post: ', post);
     var date = new Date(post.date * 1000),
         minutes = (String(date.getMinutes()).length == 1) ? '0' + date.getMinutes() : date.getMinutes();
     date = date.getDate() + '.' + (Number(date.getMonth()) + 1)  + '.' + date.getFullYear()  + ' ' + date.getHours()  + ':' + minutes;
@@ -290,6 +290,7 @@ $(btnAddPosts).click( function () {
     countOut += 1;
     var code = '';
     for (var i = 0; i < 10; i++) {
+        console.log(countOut, posts[countOut]);
         code += make_post(posts[countOut]);
         if (posts.length == countOut) {
             $(btnAddPosts).css('display', 'none');
