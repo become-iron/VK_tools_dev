@@ -172,14 +172,13 @@ function displayPosts(posts) {
             // TODO другие виды прикреплений
             var listPhoto = post.attachments.filter(function(attach) {
                 return attach.type == 'photo'
-                }),
+            }),
                 listAudio = post.attachments.filter(function(attach) {
                 return attach.type == 'audio'
-                });
-                //listVideo = post.attachments.filter(function(attach) {
-                //    return attach.type == 'video'
-                //});
-
+            });
+            //listVideo = post.attachments.filter(function(attach) {
+                //return attach.type == 'video'
+            //});
 
 
             if (listPhoto.length > 0) {
@@ -254,6 +253,12 @@ function displayPosts(posts) {
             '</div>' +
             '</div>';
     }
+
+
+    // кнопка открытия дополнительных постов
+
+    code += '<button id="btn_add_posts" class="col-xs-offset-2 col-xs-8 btn btn-primary btn-sm">Ещё 10 постов</button>'
+
     $(divPosts).append($( code ));
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
@@ -266,6 +271,10 @@ function displayPosts(posts) {
 $(selGroups).change(function() {
     $(inpOwner).val('');
 });
+
+// $('#btn_add_posts').click( function () {
+//     $(divPosts).append()
+// });
 
 function isError(data) {
     // ПРОВЕРКА НА ОШИБКУ
