@@ -285,9 +285,9 @@ $(selGroups).change(function() {
 
 // кнопка отображения дополнительных постов
 $(btnAddPosts).click( function () {
-    countOut += 1;
     var code = '';
     for (var i = 0; i < 10; i++) {
+        countOut += 1;
         code += make_post(posts[countOut]);
         if (posts.length == countOut) {
             $(btnAddPosts).css('display', 'none');
