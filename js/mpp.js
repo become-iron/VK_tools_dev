@@ -113,7 +113,6 @@ function displayPosts(posts) {
     // ВЫВОД ПОСТОВ
     var countOut = Number($(inpCountOut).val());
     var typeOfSort = $(selSort).val();  // вид сортировки
-    var isContent = $(chbIsContent).prop("checked");
 
     console.log('Записи: ', posts);
     if (isError(posts)) return;
@@ -143,121 +142,11 @@ function displayPosts(posts) {
     console.log('На вывод: ', posts);
     var code = '';
     for (var j = 0; j < posts.length; j++) {
-        var post = posts[j];
-        // составление даты записи
-        var date = new Date(post.date * 1000),
-            minutes = (String(date.getMinutes()).length == 1) ? '0' + date.getMinutes() :/**/ date.getMinutes();
-        date = date.getDate() + '.' + (Number(date.getMonth()) + 1)  + '.' + date.getFullYear()  + ' ' + date.getHours()  + ':' + minutes;
-        // начало записи
-        code +=
-            '<div class="panel panel-default">' +
-            '<div class="list-group">';
-        // если имеется текст
-        if (post.text.length > 0 && isContent) {
-            // заменяем ссылке в тексте на реальные, добавляем переносы строк
-            var text = post.text
-                .replace(reLink, function(s){
-                    var str = (/:\/\//.exec(s) === null ? "http://" + s : s );  // CHECK
-                    return '<a href="'+ str + '">' + s + '</a>';
-                })
-                .replace(/\n/g, '<br>');
-            code +=
-                '<p class="list-group-item">' +
-                    text +
-                '</p>'
-        }
-        // если имеются прикрепления
-        if (post.attachments && isContent) {
-            // списки с каждым типом прикреплений
-            // TODO другие виды прикреплений
-            var listPhoto = post.attachments.filter(function(attach) {
-                return attach.type == 'photo'
-            }),
-                listAudio = post.attachments.filter(function(attach) {
-                return attach.type == 'audio'
-            });
-            //listVideo = post.attachments.filter(function(attach) {
-                //return attach.type == 'video'
-            //});
-
-
-            if (listPhoto.length > 0) {
-                console.log('Изображения: ', listPhoto);
-                // начало блока
-                code += '<div class="list-group-item"><div class="row">';
-                for (var k = 0; k < listPhoto.length; k++) {
-                    var photo = listPhoto[k].photo;
-                    // поиск самой большой версии изображения
-                    var linkBigPhoto;
-                    var resolution = [2560, 1280, 807, 604, 130, 75];
-                    for (var q = 0; q < resolution.length; q++) {
-                        if (photo['photo_' + resolution[q]]) {
-                            linkBigPhoto = photo['photo_' + resolution[q]];
-                            break;
-                        }
-                    }
-                    code += '<div class="col-xs-2"><a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo.photo_130 ? photo.photo_130 : photo.photo_75) + '" width="auto" height="70"></a></div>';
-                }
-                // конец блока
-                code += '</div></div>';
-            }
-            if (listAudio.length > 0) {
-                console.log('Аудио: ', listAudio);
-                // начало блока
-                code += '<div class="list-group-item">';
-                for (k = 0; k < listAudio.length; k++) {
-                    var audio = listAudio[k].audio;
-                    // если не указан url аудиозаписи
-                    if (audio.url == 0) {continue}
-                    code += '<audio src="' + audio.url + '" controls></audio>';
-                }
-                // конец блока
-                code += '</div>';
-            }
-
-            //if (listVideo.length > 0) {
-            //    console.log('Видео: ', listVideo);
-            //    // начало блока
-            //    code += '<div class="list-group-item">';
-            //    for (var k = 0; k < listPhoto.length; k++) {
-            //        var video = listVideo[k];
-            //        code += '<div class="embed-responsive embed-responsive-16by9">' +
-            //            '<iframe src="//vk.com/video_ext.php?oid=' + video.video.owner_id + '&id=' + video.video.id + '&hash=' + video.video.access_key + '"></iframe>' +
-            //            '</div>';
-            //        console.log('<div class="embed-responsive embed-responsive-16by9">' +
-            //            '<iframe src="//vk.com/video_ext.php?oid=' + video.video.owner_id + '&id=' + video.video.id + '&hash=' + video.video.access_key + '"></iframe>' +
-            //            '</div>');
-            //    }
-            //    // конец блока
-            //    code += '</div>';
-            //}
-        }
-        // конец записи
-        code += '<p class="list-group-item">' +
-                    '<button title="Мне нравится" class="btn action" type="button" disabled="disabled">' +
-                        '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ' + post.likes.count +
-                    '</button>' +
-                    '<button title="Поделиться" class="btn action" type="button" disabled="disabled">' +
-                        '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> ' + post.reposts.count +
-                    '</button>' +
-                    '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
-                        '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + post.speed +
-                    '</button>' +
-                '</p>' +
-                '<p class="list-group-item">' +
-                    '<span title="Дата создания записи" class="action">' + date + '</span>' +
-                    '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + post.from_id + '_' + post.id + '" target="_blank" role="button">' +
-                        'Перейти к записи' +
-                    '</a>' +
-                '</p>' +
-            '</div>' +
-            '</div>';
+        code += make_post(posts[j])
     }
 
-
     // кнопка открытия дополнительных постов
-
-    code += '<button id="btn_add_posts" class="col-xs-offset-2 col-xs-8 btn btn-primary btn-sm">Ещё 10 постов</button>'
+    code += '<button id="btn_add_posts" class="col-xs-offset-2 col-xs-8 btn btn-default btn-sm">Ещё 10 постов</button>';
 
     $(divPosts).append($( code ));
     // разблокировка кнопки выборки
@@ -275,6 +164,122 @@ $(selGroups).change(function() {
 // $('#btn_add_posts').click( function () {
 //     $(divPosts).append()
 // });
+
+function make_post(post) {
+    // СОЗДАНИЕ HTML-КОДА ДЛЯ ПОСТА
+    var isContent = $(chbIsContent).prop("checked");
+    var code = '';
+
+    // составление даты записи
+    var date = new Date(post.date * 1000),
+        minutes = (String(date.getMinutes()).length == 1) ? '0' + date.getMinutes() : date.getMinutes();
+    date = date.getDate() + '.' + (Number(date.getMonth()) + 1)  + '.' + date.getFullYear()  + ' ' + date.getHours()  + ':' + minutes;
+    // начало записи
+    code +=
+        '<div class="panel panel-default">' +
+        '<div class="list-group">';
+    // если имеется текст
+    if (post.text.length > 0 && isContent) {
+        // заменяем ссылке в тексте на реальные, добавляем переносы строк
+        var text = post.text
+            .replace(reLink, function(s){
+                var str = (/:\/\//.exec(s) === null ? "http://" + s : s );  // CHECK
+                return '<a href="'+ str + '">' + s + '</a>';
+            })
+            .replace(/\n/g, '<br>');
+        code +=
+            '<p class="list-group-item">' +
+            text +
+            '</p>'
+    }
+    // если имеются прикрепления
+    if (post.attachments && isContent) {
+        // списки с каждым типом прикреплений
+        // TODO другие виды прикреплений
+        var listPhoto = post.attachments.filter(function(attach) {
+                return attach.type == 'photo'
+            }),
+            listAudio = post.attachments.filter(function(attach) {
+                return attach.type == 'audio'
+            });
+        //listVideo = post.attachments.filter(function(attach) {
+        //return attach.type == 'video'
+        //});
+
+
+        if (listPhoto.length > 0) {
+            console.log('Изображения: ', listPhoto);
+            // начало блока
+            code += '<div class="list-group-item"><div class="row">';
+            for (var k = 0; k < listPhoto.length; k++) {
+                var photo = listPhoto[k].photo;
+                // поиск самой большой версии изображения
+                var linkBigPhoto;
+                var resolution = [2560, 1280, 807, 604, 130, 75];
+                for (var q = 0; q < resolution.length; q++) {
+                    if (photo['photo_' + resolution[q]]) {
+                        linkBigPhoto = photo['photo_' + resolution[q]];
+                        break;
+                    }
+                }
+                code += '<div class="col-xs-2"><a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo.photo_130 ? photo.photo_130 : photo.photo_75) + '" width="auto" height="70"></a></div>';
+            }
+            // конец блока
+            code += '</div></div>';
+        }
+        if (listAudio.length > 0) {
+            console.log('Аудио: ', listAudio);
+            // начало блока
+            code += '<div class="list-group-item">';
+            for (k = 0; k < listAudio.length; k++) {
+                var audio = listAudio[k].audio;
+                // если не указан url аудиозаписи
+                if (audio.url == 0) {continue}
+                code += '<audio src="' + audio.url + '" controls></audio>';
+            }
+            // конец блока
+            code += '</div>';
+        }
+
+        //if (listVideo.length > 0) {
+        //    console.log('Видео: ', listVideo);
+        //    // начало блока
+        //    code += '<div class="list-group-item">';
+        //    for (var k = 0; k < listPhoto.length; k++) {
+        //        var video = listVideo[k];
+        //        code += '<div class="embed-responsive embed-responsive-16by9">' +
+        //            '<iframe src="//vk.com/video_ext.php?oid=' + video.video.owner_id + '&id=' + video.video.id + '&hash=' + video.video.access_key + '"></iframe>' +
+        //            '</div>';
+        //        console.log('<div class="embed-responsive embed-responsive-16by9">' +
+        //            '<iframe src="//vk.com/video_ext.php?oid=' + video.video.owner_id + '&id=' + video.video.id + '&hash=' + video.video.access_key + '"></iframe>' +
+        //            '</div>');
+        //    }
+        //    // конец блока
+        //    code += '</div>';
+        //}
+    }
+    // конец записи
+    code += '<p class="list-group-item">' +
+        '<button title="Мне нравится" class="btn action" type="button" disabled="disabled">' +
+        '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ' + post.likes.count +
+        '</button>' +
+        '<button title="Поделиться" class="btn action" type="button" disabled="disabled">' +
+        '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> ' + post.reposts.count +
+        '</button>' +
+        '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
+        '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + post.speed +
+        '</button>' +
+        '</p>' +
+        '<p class="list-group-item">' +
+        '<span title="Дата создания записи" class="action">' + date + '</span>' +
+        '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + post.from_id + '_' + post.id + '" target="_blank" role="button">' +
+        'Перейти к записи' +
+        '</a>' +
+        '</p>' +
+        '</div>' +
+        '</div>';
+    return code;
+}
 
 function isError(data) {
     // ПРОВЕРКА НА ОШИБКУ

@@ -1,4 +1,6 @@
-.container {margin-top: 5px;}
+.container {
+    margin-top: 5px;
+}
 .form-group {
     padding-right: 1px;
     margin-bottom: 7px;
@@ -20,4 +22,9 @@
 }
 .embed-responsive {
     margin-top: 1px;
+}
+
+#add_posts {
+    margin-top: -5px;
+    margin-bottom: 10px;
 }
