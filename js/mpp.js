@@ -168,6 +168,7 @@ function make_post(post) {
     var code = '';
 
     // составление даты записи
+    console.log('post: ', post);
     var date = new Date(post.date * 1000),
         minutes = (String(date.getMinutes()).length == 1) ? '0' + date.getMinutes() : date.getMinutes();
     date = date.getDate() + '.' + (Number(date.getMonth()) + 1)  + '.' + date.getFullYear()  + ' ' + date.getHours()  + ':' + minutes;
