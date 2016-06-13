@@ -158,7 +158,7 @@ function displayPosts() {
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
-    $(btnAddPosts).prop('display', 'inline-block');
+    $(btnAddPosts).css('display', 'inline-block');
     resize_frame();
 }
 
@@ -291,7 +291,7 @@ $(btnAddPosts).click( function () {
     for (var i = 0; i < 10; i++) {
         code += make_post(countOut);
         if (posts.length == countOut) {
-            $(btnAddPosts).prop('display', 'none');
+            $(btnAddPosts).css('display', 'none');
             break;
         }
     }
