@@ -1,0 +1,23 @@
+.container {margin-top: 5px;}
+.form-group {
+    padding-right: 1px;
+    margin-bottom: 7px;
+}
+.action {
+    color: #7295B2;
+    background-color: #fff;
+    padding: 3px 4px;
+}
+.action:hover, .action:active, .action:focus {
+    color: #2F5879;
+    background-color: #E9EDF1;
+}
+.marked {
+    color: #2F5879;
+}
+.list-group-item {
+    padding: 5px 7px;
+}
+.embed-responsive {
+    margin-top: 1px;
+}
