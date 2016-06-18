@@ -327,7 +327,7 @@ $(btnAddPosts).click( function () {
     var code = '';
     for (var i = 0; i < 10; i++) {
         countOut += 1;
-        if (posts.length >= countOut) {
+        if (posts.length <= countOut) {
             $(btnAddPosts).prop("disabled", true);
             break;
         }
