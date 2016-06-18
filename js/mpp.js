@@ -13,13 +13,14 @@ var btnAddPosts = '#btn_add_posts';
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
 
-var posts;
-var countOut;
-var typeOfSort;
-var isContent;
+var posts;  // полученные посты
+var countOut;  // количество постов на вывод
+var typeOfSort;  // тип сортировки
+var isContent;  // необходимость вывода прикреплений
 
 
 function upd_group_list(data) {
+    // ОБНОВЛЕНИЯ СПИСКА ГРУПП В ВЫПАДАЮЩЕМ СПИСКЕ
     if (isError(data)) return;
     var groups = data['response']['items'];
     // добавляем группы в выпадающий список
@@ -30,91 +31,9 @@ function upd_group_list(data) {
         options += '<option value="-' + group['id'] + '">' + group['name'] + '</option>';
     }
     $(selGroups).append($( options ));
+    $(btnExec).prop("disabled", false);
 }
 
-
-// ПОЛУЧЕНИЕ СПИСКА ЗАПИСЕЙ
-$(btnExec).click(function() {
-    // блокировка кнопки выборки
-    $(btnExec).prop("disabled", true);
-    $(btnExec).val('[ обновляется ]');
-
-    var ownerInfo = $(inpOwner).val();
-    var count = Number($(inpCount).val());  // количество записей для анализа
-    var offset = Number($(inpOffset).val());  // смещение  для выборки записей
-    var filter = $(selFilter).val();
-    var id = '';
-    var domain = '';
-
-    if (ownerInfo.length > 0) {
-        if (ownerInfo.search(/^-?[0-9]+$/) != -1) {
-            id = ownerInfo;
-        }
-        else {
-            var _ = ownerInfo.search('vk.com/');
-            if (_ != -1) {
-                domain = ownerInfo.slice(_ + 7);
-            }
-            else {
-                domain = ownerInfo;
-            }
-        }
-    }
-    else {
-        id = $(selGroups).val();
-    }
-
-    if (count > 100) {
-        _ = (id.length > 0) ? ('owner_id: ' + id) : ('domain: "' + domain + '"');
-        var query = 'var posts;' +
-                    'var offset = ' + offset + ';' +
-                    'var tmpParam;' +
-                    'var countPosts;' +  // количество записей на стене
-                    'var countQuery = 0;' +  // количество выполненных запросов к api (ограничение в 25)
-                    'var count = ' + count + ';' +
-                    'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
-                    'posts = tmpParam.items;' +
-                    'countPosts = tmpParam.count;' +
-                    'if (countPosts <= 100) {' +
-                    'return posts;' +
-                    '}' +
-                    'offset = offset + 100;' +
-                    'while(posts.length < count && countQuery < 24) {' +
-                    'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
-                    'posts = posts + tmpParam.items;' +
-                    'if (tmpParam.count < 100) {return posts;}' +
-                    'countQuery = countQuery + 1;' +
-                    'offset = offset + 100;' +
-                    '}' +
-                    'return posts;';
-        // console.log('execute-запрос: ', query);
-        VK.api(
-            'execute',
-            {code: query},
-            function(data) {
-                posts = data.response;
-                displayPosts();
-            }
-        );
-    }
-    // else if (count > 2500) {
-        // TEMP дописать
-    // }
-    else {
-        var params = (id.length > 0)
-                     ? {owner_id: id, count: count, filter: filter, offset: offset}
-                     : {domain: domain, count: count, filter: filter, offset: offset};
-        VK.api(
-            'wall.get',
-            params,
-            function(data) {
-                if (isError(data)) return;
-                posts = data.response.items;
-                displayPosts();
-            }
-        );
-    }
-});
 
 function displayPosts() {
     // ВЫВОД ПОСТОВ
@@ -152,12 +71,12 @@ function displayPosts() {
     for (var j = 0; j < countOut; j++) {
         code += make_post(posts[j])
     }
-    
+
     $(divPosts).append($( code ));
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
-    $(btnAddPosts).css('display', 'inline-block');
+    $(btnAddPosts).prop("disabled", false);
     resize_frame();
 }
 
@@ -277,27 +196,6 @@ function make_post(post) {
     return code;
 }
 
-// очищение поля для ссылки при выборе группы из выпад. списка
-$(selGroups).change(function() {
-    $(inpOwner).val('');
-});
-
-
-// кнопка отображения дополнительных постов
-$(btnAddPosts).click( function () {
-    var code = '';
-    for (var i = 0; i < 10; i++) {
-        countOut += 1;
-        code += make_post(posts[countOut]);
-        if (posts.length == countOut) {
-            $(btnAddPosts).css('display', 'none');
-            break;
-        }
-    }
-    $(divPosts).append(code);
-    resize_frame();
-});
-
 
 function isError(data) {
     // ПРОВЕРКА НА ОШИБКУ
@@ -330,3 +228,110 @@ function sort_RevBySpeed(a, b) {
     else if (a.speed > b.speed) return -1;
     else return 0;
 }
+
+
+// ПОЛУЧЕНИЕ СПИСКА ЗАПИСЕЙ
+$(btnExec).click(function() {
+    // блокировка кнопки выборки
+    $(btnExec).prop("disabled", true);
+    $(btnExec).val('[ обновляется ]');
+
+    var ownerInfo = $(inpOwner).val();
+    var count = Number($(inpCount).val());  // количество записей для анализа
+    var offset = Number($(inpOffset).val());  // смещение  для выборки записей
+    var filter = $(selFilter).val();
+    var id = '';
+    var domain = '';
+
+    if (ownerInfo.length > 0) {
+        if (ownerInfo.search(/^-?[0-9]+$/) != -1) {
+            id = ownerInfo;
+        }
+        else {
+            var _ = ownerInfo.search('vk.com/');
+            if (_ != -1) {
+                domain = ownerInfo.slice(_ + 7);
+            }
+            else {
+                domain = ownerInfo;
+            }
+        }
+    }
+    else {
+        id = $(selGroups).val();
+    }
+
+    // ФОРМИРОВАНИЕ ЗАПРОСА НА ПОЛУЧЕНИЕ ПОСТОВ
+    if (count > 100) {
+        _ = (id.length > 0) ? ('owner_id: ' + id) : ('domain: "' + domain + '"');
+        var query = 'var posts;' +
+                    'var offset = ' + offset + ';' +
+                    'var tmpParam;' +
+                    'var countPosts;' +  // количество записей на стене
+                    'var countQuery = 0;' +  // количество выполненных запросов к api (ограничение в 25)
+                    'var count = ' + count + ';' +
+                    'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
+                    'posts = tmpParam.items;' +
+                    'countPosts = tmpParam.count;' +
+                    'if (countPosts <= 100) {' +
+                    'return posts;' +
+                    '}' +
+                    'offset = offset + 100;' +
+                    'while(posts.length < count && countQuery < 24) {' +
+                    'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
+                    'posts = posts + tmpParam.items;' +
+                    'if (tmpParam.count < 100) {return posts;}' +
+                    'countQuery = countQuery + 1;' +
+                    'offset = offset + 100;' +
+                    '}' +
+                    'return posts;';
+        // console.log('execute-запрос: ', query);
+        VK.api(
+            'execute',
+            {code: query},
+            function(data) {
+                posts = data.response;
+                displayPosts();
+            }
+        );
+    }
+    // else if (count > 2500) {
+        // TEMP дописать
+    // }
+    else {
+        var params = (id.length > 0)
+                     ? {owner_id: id, count: count, filter: filter, offset: offset}
+                     : {domain: domain, count: count, filter: filter, offset: offset};
+        VK.api(
+            'wall.get',
+            params,
+            function(data) {
+                if (isError(data)) return;
+                posts = data.response.items;
+                displayPosts();
+            }
+        );
+    }
+});
+
+
+// очищение поля для ссылки при выборе группы из выпад. списка
+$(selGroups).change(function() {
+    $(inpOwner).val('');
+});
+
+
+// кнопка отображения дополнительных постов (+10)
+$(btnAddPosts).click( function () {
+    var code = '';
+    for (var i = 0; i < 10; i++) {
+        countOut += 1;
+        if (posts.length >= countOut) {
+            $(btnAddPosts).prop("disabled", true);
+            break;
+        }
+        code += make_post(posts[countOut]);
+    }
+    $(divPosts).append(code);
+    resize_frame();
+});
