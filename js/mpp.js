@@ -87,9 +87,13 @@ function make_post(post) {
     var code = '';
 
     // составление даты записи
-    var date = new Date(post.date * 1000),
-        minutes = (String(date.getMinutes()).length == 1) ? '0' + date.getMinutes() : date.getMinutes();
-    date = date.getDate() + '.' + (Number(date.getMonth()) + 1)  + '.' + date.getFullYear()  + ' ' + date.getHours()  + ':' + minutes;
+    var date = new Date(post.date * 1000);
+    var month = Number(date.getMonth()) + 1;
+    var minutes = date.getMinutes();
+    month = (month.length == 1) ? '0' + month : month;
+    minutes = (minutes.length == 1) ? '0' + minutes : minutes;
+    date = date.getDate() + '.' + month + '.' + date.getFullYear()  + ' ' + date.getHours()  + ':' + minutes;
+
     // начало записи
     code +=
         '<div class="panel panel-default">' +
