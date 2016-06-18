@@ -31,7 +31,6 @@ function upd_group_list(data) {
         options += '<option value="-' + group['id'] + '">' + group['name'] + '</option>';
     }
     $(selGroups).append(options);
-    $(btnAddPosts).css("display", 'inline-block');
     $(btnExec).prop("disabled", false);
 }
 
@@ -78,6 +77,7 @@ function displayPosts() {
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
     $(btnAddPosts).prop("disabled", false);
+    $(btnAddPosts).css("display", 'inline-block');
     resize_frame();
 }
 
