@@ -31,7 +31,7 @@ function upd_group_list(data) {
         options += '<option value="-' + group['id'] + '">' + group['name'] + '</option>';
     }
     $(selGroups).append(options);
-    $(btnExec).css("display", 'inline-block');
+    $(btnAddPosts).css("display", 'inline-block');
     $(btnExec).prop("disabled", false);
 }
 
