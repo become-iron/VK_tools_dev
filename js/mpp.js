@@ -17,31 +17,36 @@ var posts;  // полученные посты
 var countOut;  // количество постов на вывод
 var typeOfSort;  // тип сортировки
 var isContent;  // необходимость вывода прикреплений
+var code = '';
 
 var htmlTemplate = {
-    postStart: '<div class="panel panel-default"><div class="list-group">',
-    postEnd:   '<p class="list-group-item">' +
-                   '<button title="Лайки" class="btn action" type="button" disabled="disabled">' +
-                      '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {0}' +
-                   '</button>' +
-                   '<button title="Репосты" class="btn action" type="button" disabled="disabled">' +
-                      '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> {1}' +
-                   '</button>' +
-                   '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
-                      '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> {2}' +
-                   '</button>' +
-               '</p>' +
-               '<p class="list-group-item">' +
-                   '<span title="Дата создания записи" class="action">{3}</span>' +
-                   '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall{4}_{5}" target="_blank" role="button">' +
-                       'Перейти к записи' +
-                   '</a>' +
-               '</p>' +
-               '</div>' +
-               '</div>'
+    postStart:          '<div class="panel panel-default"><div class="list-group">',
+    postEnd:            '<p class="list-group-item">' +
+                            '<button title="Лайки" class="btn action" type="button" disabled="disabled">' +
+                               '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {0}' +
+                            '</button>' +
+                            '<button title="Репосты" class="btn action" type="button" disabled="disabled">' +
+                               '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> {1}' +
+                            '</button>' +
+                            '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
+                               '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> {2}' +
+                            '</button>' +
+                        '</p>' +
+                        '<p class="list-group-item">' +
+                            '<span title="Дата создания записи" class="action">{3}</span>' +
+                            '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall{4}_{5}" target="_blank" role="button">' +
+                                'Перейти к записи' +
+                            '</a>' +
+                        '</p>' +
+                        '</div></div>',
+    blockPhotoStart:    '<div class="list-group-item"><div class="row">',
+    blockPhotoEnd:      '</div></div>',
+    blockAudioStart:    '<div class="list-group-item">',
+    audio:              '<audio src="{0}" controls></audio>',
+    blockAudioEnd:      '</div>'
 };
 
-var i;
+var i, j;
 
 
 function upd_group_list(data) {
@@ -107,7 +112,10 @@ function displayPosts() {
 
 function make_post(post) {
     // СОЗДАНИЕ HTML-КОДА ДЛЯ ПОСТА
-    var code = '';
+    // function addZero(val) {
+    //     val = String(val);
+    //     return (val.length == 1) ? '0' + val : val;
+    // }
 
     // составление даты записи
     var date = new Date(post['date'] * 1000);
@@ -142,47 +150,48 @@ function make_post(post) {
         // TODO другие виды прикреплений
         var listPhoto = post['attachments'].filter( function(attach) {
                 return attach.type == 'photo'
-            } ),
-            listAudio = post['attachments'].filter( function(attach) {
+            } );
+        var listAudio = post['attachments'].filter( function(attach) {
                 return attach.type == 'audio'
             } );
-        //listVideo = post['attachments'].filter(function(attach) {
+        //var listVideo = post['attachments'].filter(function(attach) {
         //return attach.type == 'video'
         //});
 
         if (listPhoto.length > 0) {
             // console.log('Изображения: ', listPhoto);
             // начало блока
-            code += '<div class="list-group-item"><div class="row">';
-            for (var k = 0; k < listPhoto.length; k++) {
-                var photo = listPhoto[k]['photo'];
-                // поиск самой большой версии изображения
+            code += htmlTemplate.blockPhotoStart;
+            for (i = 0; i < listPhoto.length; i++) {
+                var photo = listPhoto[i]['photo'];
+                // поиск версии изображения с наибольшим разрешением
                 var linkBigPhoto;
-                var resolution = [2560, 1280, 807, 604, 130, 75];
-                for (var q = 0; q < resolution.length; q++) {
-                    if (photo['photo_' + resolution[q]]) {
-                        linkBigPhoto = photo['photo_' + resolution[q]];
+                var resolution = [2560, 1280, 807, 604, 130, 75];  // возможные разрешения
+                for (j = 0; j < resolution.length; j++) {
+                    if (photo['photo_' + resolution[j]]) {
+                        linkBigPhoto = photo['photo_' + resolution[j]];
                         break;
                     }
                 }
+                // TODO
                 code += '<div class="col-xs-2">' +
                             '<a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo['photo_130'] ? photo['photo_130'] : photo['photo_75']) + '" width="auto" height="70"></a>' +
                         '</div>';
             }
             // конец блока
-            code += '</div></div>';
+            code += htmlTemplate.blockPhotoEnd;
         }
         if (listAudio.length > 0) {
             // console.log('Аудио: ', listAudio);
             // начало блока
-            code += '<div class="list-group-item">';
-            for (k = 0; k < listAudio.length; k++) {
-                var audio = listAudio[k]['audio'];
+            code += htmlTemplate.blockAudioStart;
+            for (i = 0; i < listAudio.length; i++) {
+                var audio = listAudio[i]['audio'];
                 if (audio['url'] == 0) {continue}  // если не указан url аудиозаписи
-                code += '<audio src="' + audio['url'] + '" controls></audio>';
+                code += htmlTemplate.audio.format(audio['url']);
             }
             // конец блока
-            code += '</div>';
+            code += htmlTemplate.blockAudioEnd;
         }
 
         //if (listVideo.length > 0) {
@@ -209,25 +218,6 @@ function make_post(post) {
                                         date,
                                         post['from_id'],
                                         post['id']);
-        // '<p class="list-group-item">' +
-        // '<button title="Мне нравится" class="btn action" type="button" disabled="disabled">' +
-        // '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ' + post['likes']['count'] +
-        // '</button>' +
-        // '<button title="Поделиться" class="btn action" type="button" disabled="disabled">' +
-        // '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> ' + post['reposts']['count'] +
-        // '</button>' +
-        // '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
-        // '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + post['speed'] +
-        // '</button>' +
-        // '</p>' +
-        // '<p class="list-group-item">' +
-        // '<span title="Дата создания записи" class="action">' + date + '</span>' +
-        // '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + post['from_id'] + '_' + post['id'] + '" target="_blank" role="button">' +
-        // 'Перейти к записи' +
-        // '</a>' +
-        // '</p>' +
-        // '</div>' +
-        // '</div>';
     return code;
 }
 
