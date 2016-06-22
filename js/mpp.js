@@ -206,6 +206,7 @@ function make_post(post) {
     code += htmlTemplate.postEnd.format(post['likes']['count'],
                                         post['reposts']['count'],
                                         post['speed'],
+                                        date,
                                         post['from_id'],
                                         post['id']);
         // '<p class="list-group-item">' +
