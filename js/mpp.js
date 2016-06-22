@@ -93,9 +93,10 @@ function displayPosts() {
         posts.sort(sort_RevBySpeed);
     }
     console.log('На вывод: ', posts);
-    var code = '';
+    
+    code = '';
     for (var k = 0; k < countOut; k++) {
-        code += make_post(posts[k]);
+        make_post(posts[k]);
     }
 
     $(divPosts).append($( code ));
@@ -216,7 +217,7 @@ function make_post(post) {
                                         date,
                                         post['from_id'],
                                         post['id']);
-    return code;
+    // return code;
 }
 
 
@@ -330,7 +331,7 @@ $(btnExec).click(function() {
 
 // кнопка отображения дополнительных постов (+10)
 $(btnAddPosts).click( function () {
-    var code = '';
+    code = '';
     for (var n = 0; n < 10; n++) {
         countOut += 1;
         if (posts.length <= countOut) {
