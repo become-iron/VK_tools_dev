@@ -110,21 +110,20 @@ function displayPosts() {
 
 
 function make_post(post) {
-    // СОЗДАНИЕ HTML-КОДА ДЛЯ ПОСТА
-    // function addZero(val) {
-    //     val = String(val);
-    //     return (val.length == 1) ? '0' + val : val;
-    // }
+    /* СОЗДАНИЕ HTML-КОДА ДЛЯ ПОСТА
+    Добавляет HTML-код для вывода постов в глобальную переменную code
+    Принимает:
+        post (object) - запись*/
+
+    function zfill(val) {
+        // ДОБАВЛЕНИЕ НУЛЯ ПЕРЕД ЧИСЛОМ
+        val = String(val);
+        return (val.length == 1) ? '0' + val : val;
+    }
 
     // составление даты записи
     var date = new Date(post['date'] * 1000);
-    var day = String(date.getDate());
-    var month = String(Number(date.getMonth()) + 1);
-    var minutes = String(date.getMinutes());
-    day = (day.length == 1) ? '0' + day : day;
-    month = (month.length == 1) ? '0' + month : month;
-    minutes = (minutes.length == 1) ? '0' + minutes : minutes;
-    date = day + '.' + month + '.' + date.getFullYear()  + ' ' + date.getHours()  + ':' + minutes;
+    date = zfill(date.getDate()) + '.' + zfill(Number(date.getMonth()) + 1) + '.' + date.getFullYear()  + ' ' + zfill(date.getHours()) + ':' + zfill(date.getMinutes());
 
     // начало записи
     code += htmlTemplate.postStart;
@@ -217,7 +216,6 @@ function make_post(post) {
                                         date,
                                         post['from_id'],
                                         post['id']);
-    // return code;
 }
 
 
