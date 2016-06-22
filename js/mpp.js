@@ -46,7 +46,7 @@ var htmlTemplate = {
     blockAudioEnd:      '</div>'
 };
 
-var i, j;
+var i, j, k;
 
 
 function upd_group_list(data) {
@@ -162,14 +162,14 @@ function make_post(post) {
             // console.log('Изображения: ', listPhoto);
             // начало блока
             code += htmlTemplate.blockPhotoStart;
-            for (i = 0; i < listPhoto.length; i++) {
-                var photo = listPhoto[i]['photo'];
+            for (j = 0; j < listPhoto.length; j++) {
+                var photo = listPhoto[j]['photo'];
                 // поиск версии изображения с наибольшим разрешением
                 var linkBigPhoto;
                 var resolution = [2560, 1280, 807, 604, 130, 75];  // возможные разрешения
-                for (j = 0; j < resolution.length; j++) {
-                    if (photo['photo_' + resolution[j]]) {
-                        linkBigPhoto = photo['photo_' + resolution[j]];
+                for (k = 0; k < resolution.length; k++) {
+                    if (photo['photo_' + resolution[k]]) {
+                        linkBigPhoto = photo['photo_' + resolution[k]];
                         break;
                     }
                 }
@@ -185,8 +185,8 @@ function make_post(post) {
             // console.log('Аудио: ', listAudio);
             // начало блока
             code += htmlTemplate.blockAudioStart;
-            for (i = 0; i < listAudio.length; i++) {
-                var audio = listAudio[i]['audio'];
+            for (j = 0; j < listAudio.length; j++) {
+                var audio = listAudio[j]['audio'];
                 if (audio['url'] == 0) {continue}  // если не указан url аудиозаписи
                 code += htmlTemplate.audio.format(audio['url']);
             }
