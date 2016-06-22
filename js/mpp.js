@@ -93,7 +93,7 @@ function displayPosts() {
         posts.sort(sort_RevBySpeed);
     }
     console.log('На вывод: ', posts);
-    
+
     code = '';
     for (var k = 0; k < countOut; k++) {
         make_post(posts[k]);
@@ -338,7 +338,7 @@ $(btnAddPosts).click( function () {
             $(btnAddPosts).prop("disabled", true);
             break;
         }
-        code += make_post(posts[countOut]);
+        make_post(posts[countOut]);
     }
     $(divPosts).append(code);
     resize_frame();
