@@ -52,7 +52,7 @@ function displayPosts() {
     var currentTime= new Date().getTime() / 1000;
     for (var i = 0; i < posts.length; i++) {
         // скорость = количество лайков / (текущая дата - дата публикации записи) [1/день]
-        posts[i].speed = Number((posts[i].likes.count / (currentTime - posts[i].date) * 86400).toFixed(2));
+        posts[i]['speed'] = Number((posts[i]['likes']['count'] / (currentTime - posts[i]['date']) * 86400).toFixed(2));
     }
     // сортировка записей
     if (typeOfSort == 'byLikes') {
@@ -87,7 +87,7 @@ function make_post(post) {
     var code = '';
 
     // составление даты записи
-    var date = new Date(post.date * 1000);
+    var date = new Date(post['date'] * 1000);
     var day = String(date.getDate());
     var month = String(Number(date.getMonth()) + 1);
     var minutes = String(date.getMinutes());
@@ -101,9 +101,9 @@ function make_post(post) {
         '<div class="panel panel-default">' +
         '<div class="list-group">';
     // если имеется текст
-    if (post.text.length > 0 && isContent) {
+    if (post['text'].length > 0 && isContent) {
         // заменяем ссылке в тексте на реальные, добавляем переносы строк
-        var text = post.text
+        var text = post['text']
             .replace(reLink, function(s){
                 var str = (/:\/\//.exec(s) === null ? "http://" + s : s );  // CHECK
                 return '<a href="'+ str + '">' + s + '</a>';
@@ -115,26 +115,26 @@ function make_post(post) {
             '</p>'
     }
     // если имеются прикрепления
-    if (post.attachments && isContent) {
+    // REVIEW
+    if (post['attachments'] && isContent) {
         // списки с каждым типом прикреплений
         // TODO другие виды прикреплений
-        var listPhoto = post.attachments.filter(function(attach) {
+        var listPhoto = post['attachments'].filter( function(attach) {
                 return attach.type == 'photo'
-            }),
-            listAudio = post.attachments.filter(function(attach) {
+            } ),
+            listAudio = post['attachments'].filter( function(attach) {
                 return attach.type == 'audio'
-            });
-        //listVideo = post.attachments.filter(function(attach) {
+            } );
+        //listVideo = post['attachments'].filter(function(attach) {
         //return attach.type == 'video'
         //});
-
-
+        
         if (listPhoto.length > 0) {
             // console.log('Изображения: ', listPhoto);
             // начало блока
             code += '<div class="list-group-item"><div class="row">';
             for (var k = 0; k < listPhoto.length; k++) {
-                var photo = listPhoto[k].photo;
+                var photo = listPhoto[k]['photo'];
                 // поиск самой большой версии изображения
                 var linkBigPhoto;
                 var resolution = [2560, 1280, 807, 604, 130, 75];
@@ -144,7 +144,9 @@ function make_post(post) {
                         break;
                     }
                 }
-                code += '<div class="col-xs-2"><a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo.photo_130 ? photo.photo_130 : photo.photo_75) + '" width="auto" height="70"></a></div>';
+                code += '<div class="col-xs-2">' +
+                            '<a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo['photo_130'] ? photo['photo_130'] : photo['photo_75']) + '" width="auto" height="70"></a>' +
+                        '</div>';
             }
             // конец блока
             code += '</div></div>';
@@ -154,7 +156,7 @@ function make_post(post) {
             // начало блока
             code += '<div class="list-group-item">';
             for (k = 0; k < listAudio.length; k++) {
-                var audio = listAudio[k].audio;
+                var audio = listAudio[k]['audio'];
                 // если не указан url аудиозаписи
                 if (audio.url == 0) {continue}
                 code += '<audio src="' + audio.url + '" controls></audio>';
@@ -183,18 +185,18 @@ function make_post(post) {
     // конец записи
     code += '<p class="list-group-item">' +
         '<button title="Мне нравится" class="btn action" type="button" disabled="disabled">' +
-        '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ' + post.likes.count +
+        '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ' + post['likes']['count'] +
         '</button>' +
         '<button title="Поделиться" class="btn action" type="button" disabled="disabled">' +
-        '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> ' + post.reposts.count +
+        '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> ' + post['reposts']['count'] +
         '</button>' +
         '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
-        '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + post.speed +
+        '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + post['speed'] +
         '</button>' +
         '</p>' +
         '<p class="list-group-item">' +
         '<span title="Дата создания записи" class="action">' + date + '</span>' +
-        '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + post.from_id + '_' + post.id + '" target="_blank" role="button">' +
+        '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + post['from_id'] + '_' + post['id'] + '" target="_blank" role="button">' +
         'Перейти к записи' +
         '</a>' +
         '</p>' +
@@ -204,35 +206,23 @@ function make_post(post) {
 }
 
 
-function isError(data) {
-    // ПРОВЕРКА НА ОШИБКУ
-    if (data.error) {
-        var txtError = data.error['error_code'] + ' ' + data.error['error_msg'];
-        alert('Произошла ошибка: ' + txtError);
-        console.error(txtError, data);
-        // разблокировка кнопки выборки
-        $(btnExec).val('Произвести выборку');
-        $(btnExec).prop("disabled", false);
-        return 1;
-    }
-    else {return 0}
-}
-
 function sort_RevByLikes(a, b) {
-    if (a.likes.count < b.likes.count) return 1;
-    else if (a.likes.count > b.likes.count) return -1;
+    if (a['likes']['count'] < b['likes']['count']) return 1;
+    else if (a['likes']['count'] > b['likes']['count']) return -1;
     else return 0;
 }
+
 
 function sort_RevByReposts(a, b) {
-    if (a.reposts.count < b.reposts.count) return 1;
-    else if (a.reposts.count > b.reposts.count) return -1;
+    if (a['reposts']['count'] < b['reposts']['count']) return 1;
+    else if (a['reposts']['count'] > b['reposts']['count']) return -1;
     else return 0;
 }
 
+
 function sort_RevBySpeed(a, b) {
-    if (a.speed < b.speed) return 1;
-    else if (a.speed > b.speed) return -1;
+    if (a['speed'] < b['speed']) return 1;
+    else if (a['speed'] > b['speed']) return -1;
     else return 0;
 }
 
@@ -251,6 +241,8 @@ $(btnExec).click(function() {
     var domain = '';
 
     if (ownerInfo.length > 0) {
+        // извлечение идентификатора страницы
+        // TODO дописать для адресов типа club, public
         if (ownerInfo.search(/^-?[0-9]+$/) != -1) {
             id = ownerInfo;
         }
@@ -297,7 +289,7 @@ $(btnExec).click(function() {
             'execute',
             {code: query},
             function(data) {
-                posts = data.response;
+                posts = data['response'];
                 displayPosts();
             }
         );
@@ -314,17 +306,11 @@ $(btnExec).click(function() {
             params,
             function(data) {
                 if (isError(data)) return;
-                posts = data.response.items;
+                posts = data['response']['items'];
                 displayPosts();
             }
         );
     }
-});
-
-
-// очищение поля для ссылки при выборе группы из выпад. списка
-$(selGroups).change(function() {
-    $(inpOwner).val('');
 });
 
 
@@ -341,4 +327,10 @@ $(btnAddPosts).click( function () {
     }
     $(divPosts).append(code);
     resize_frame();
+});
+
+
+// очищение поля для ссылки при выборе группы из выпад. списка
+$(selGroups).change(function() {
+    $(inpOwner).val('');
 });

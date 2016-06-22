@@ -1,11 +1,14 @@
-// ИНИЦИАЛИЗАЦИЯ API
-var apiVersion = '5.44',
-    widthFrame = 630,  // ширина фрейма
-    storage = false;
+var apiVersion = '5.44';
+var widthFrame = 630;  // ширина фрейма
+var storage = false;
 
+
+// ИНИЦИАЛИЗАЦИЯ API
 $(document).ready(function () {
+    // TEMP
     VK.init(on_success, on_fail, apiVersion);
 });
+
 
 function on_success() {
     console.log('Инициализация прошла успешно');
@@ -18,10 +21,27 @@ function on_success() {
     )
 }
 
+
 function on_fail() {
     alert('Произошла ошибка инициализации API. Попробуйте обновить страницу');
     console.error('Произошла ошибка инициализации API');
 }
+
+
+function isError(data) {
+    // ПРОВЕРКА НА ОШИБКУ
+    if (data['error']) {
+        var txtError = data['error']['error_code'] + ' ' + data['error']['error_msg'];
+        alert('Произошла ошибка: ' + txtError);
+        console.error(txtError, data);
+        // разблокировка кнопки выборки
+        $(btnExec).val('Произвести выборку');
+        $(btnExec).prop("disabled", false);
+        return true;
+    }
+    else {return false}
+}
+
 
 function resize_frame() {
     // изменение размера фрейма
@@ -40,10 +60,25 @@ function supports_storage() {
     }
 }
 
+
 function clear_storage() {
     // ПОЛНАЯ ОЧИСТКА WEB STORAGE
     sessionStorage.clear();
     console.info('История очищена')
 }
 
+
+// реализация метода format для строк
+// http://stackoverflow.com/a/4673436
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != 'undefined'
+                ? args[number]
+                : match
+                ;
+        });
+    };
+}
 
