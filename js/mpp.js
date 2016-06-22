@@ -19,10 +19,29 @@ var typeOfSort;  // тип сортировки
 var isContent;  // необходимость вывода прикреплений
 
 var htmlTemplate = {
-    postStart: '',
-    postEnd: ''
+    postStart: '<div class="panel panel-default"><div class="list-group">',
+    postEnd:   '<p class="list-group-item">' +
+                   '<button title="Лайки" class="btn action" type="button" disabled="disabled">' +
+                      '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {0}' +
+                   '</button>' +
+                   '<button title="Репосты" class="btn action" type="button" disabled="disabled">' +
+                      '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> {1}' +
+                   '</button>' +
+                   '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
+                      '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> {2}' +
+                   '</button>' +
+               '</p>' +
+               '<p class="list-group-item">' +
+                   '<span title="Дата создания записи" class="action">{3}</span>' +
+                   '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall{4}_{5}" target="_blank" role="button">' +
+                       'Перейти к записи' +
+                   '</a>' +
+               '</p>' +
+               '</div>' +
+               '</div>'
 };
 
+var i;
 
 
 function upd_group_list(data) {
@@ -56,7 +75,7 @@ function displayPosts() {
     }
     // расчёт скорости набора лайков
     var currentTime= new Date().getTime() / 1000;
-    for (var i = 0; i < posts.length; i++) {
+    for (i = 0; i < posts.length; i++) {
         // скорость = количество лайков / (текущая дата - дата публикации записи) [1/день]
         posts[i]['speed'] = Number((posts[i]['likes']['count'] / (currentTime - posts[i]['date']) * 86400).toFixed(2));
     }
@@ -70,12 +89,10 @@ function displayPosts() {
     else if (typeOfSort == 'bySpeed') {
         posts.sort(sort_RevBySpeed);
     }
-    // выборка записей
-    // posts = posts.slice(0, countOut);
     console.log('На вывод: ', posts);
     var code = '';
-    for (var j = 0; j < countOut; j++) {
-        code += make_post(posts[j])
+    for (i = 0; i < countOut; i++) {
+        code += make_post(posts[i])
     }
 
     $(divPosts).append($( code ));
@@ -103,9 +120,7 @@ function make_post(post) {
     date = day + '.' + month + '.' + date.getFullYear()  + ' ' + date.getHours()  + ':' + minutes;
 
     // начало записи
-    code +=
-        '<div class="panel panel-default">' +
-        '<div class="list-group">';
+    code += htmlTemplate.postStart;
     // если имеется текст
     if (post['text'].length > 0 && isContent) {
         // заменяем ссылке в тексте на реальные, добавляем переносы строк
@@ -188,25 +203,30 @@ function make_post(post) {
         //}
     }
     // конец записи
-    code += '<p class="list-group-item">' +
-        '<button title="Мне нравится" class="btn action" type="button" disabled="disabled">' +
-        '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ' + post['likes']['count'] +
-        '</button>' +
-        '<button title="Поделиться" class="btn action" type="button" disabled="disabled">' +
-        '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> ' + post['reposts']['count'] +
-        '</button>' +
-        '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
-        '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + post['speed'] +
-        '</button>' +
-        '</p>' +
-        '<p class="list-group-item">' +
-        '<span title="Дата создания записи" class="action">' + date + '</span>' +
-        '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + post['from_id'] + '_' + post['id'] + '" target="_blank" role="button">' +
-        'Перейти к записи' +
-        '</a>' +
-        '</p>' +
-        '</div>' +
-        '</div>';
+    code += htmlTemplate.postEnd.format(post['likes']['count'],
+                                        post['reposts']['count'],
+                                        post['speed'],
+                                        post['from_id'],
+                                        post['id']);
+        // '<p class="list-group-item">' +
+        // '<button title="Мне нравится" class="btn action" type="button" disabled="disabled">' +
+        // '<span class="glyphicon glyphicon-heart" aria-hidden="true"></span> ' + post['likes']['count'] +
+        // '</button>' +
+        // '<button title="Поделиться" class="btn action" type="button" disabled="disabled">' +
+        // '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> ' + post['reposts']['count'] +
+        // '</button>' +
+        // '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
+        // '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> ' + post['speed'] +
+        // '</button>' +
+        // '</p>' +
+        // '<p class="list-group-item">' +
+        // '<span title="Дата создания записи" class="action">' + date + '</span>' +
+        // '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall' + post['from_id'] + '_' + post['id'] + '" target="_blank" role="button">' +
+        // 'Перейти к записи' +
+        // '</a>' +
+        // '</p>' +
+        // '</div>' +
+        // '</div>';
     return code;
 }
 

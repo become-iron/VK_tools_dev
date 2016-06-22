@@ -11,19 +11,19 @@ $(document).ready(function () {
 
 
 function on_success() {
-    console.log('Инициализация прошла успешно');
+    console.info('MPP. Инициализация API прошла успешно');
     resize_frame();
     // получаем список групп юзера
     VK.api(
         'groups.get',
         {filter: 'groups, publics, events', extended: 1},
         upd_group_list
-    )
+    );
 }
 
 
 function on_fail() {
-    alert('Произошла ошибка инициализации API. Попробуйте обновить страницу');
+    alert('MPP. Произошла ошибка инициализации API. Попробуйте обновить страницу');
     console.error('Произошла ошибка инициализации API');
 }
 
@@ -33,13 +33,13 @@ function isError(data) {
     if (data['error']) {
         var txtError = data['error']['error_code'] + ' ' + data['error']['error_msg'];
         alert('Произошла ошибка: ' + txtError);
-        console.error(txtError, data);
+        console.error('MPP. Ошибка:', txtError, data);
         // разблокировка кнопки выборки
         $(btnExec).val('Произвести выборку');
         $(btnExec).prop("disabled", false);
         return true;
     }
-    else {return false}
+    else {return false;}
 }
 
 
