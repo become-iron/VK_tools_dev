@@ -286,15 +286,15 @@ $(btnExec).click(function() {
                     'posts = tmpParam.items;' +
                     'countPosts = tmpParam.count;' +
                     'if (countPosts <= 100) {' +
-                    'return posts;' +
+                        'return posts;' +
                     '}' +
                     'offset = offset + 100;' +
                     'while(posts.length < count && countQuery < 24) {' +
-                    'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
-                    'posts = posts + tmpParam.items;' +
-                    'if (tmpParam.count < 100) {return posts;}' +
-                    'countQuery = countQuery + 1;' +
-                    'offset = offset + 100;' +
+                        'tmpParam = API.wall.get({' + _ + ', count: 100, offset: offset, filter: "' + filter + '"});' +
+                        'posts = posts + tmpParam.items;' +
+                        'if (tmpParam.count < 100) {return posts;}' +
+                        'countQuery = countQuery + 1;' +
+                        'offset = offset + 100;' +
                     '}' +
                     'return posts;';
         // console.log('execute-запрос: ', query);

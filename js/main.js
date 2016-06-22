@@ -39,6 +39,13 @@ function isError(data) {
         $(btnExec).prop("disabled", false);
         return true;
     }
+    else if (data == undefined) {
+        alert('Ошибка получения записей');
+        console.error('MPP. Ошибка получения записей');
+        // разблокировка кнопки выборки
+        $(btnExec).val('Произвести выборку');
+        $(btnExec).prop("disabled", false);
+    }
     else {return false;}
 }
 
