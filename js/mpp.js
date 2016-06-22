@@ -18,6 +18,12 @@ var countOut;  // количество постов на вывод
 var typeOfSort;  // тип сортировки
 var isContent;  // необходимость вывода прикреплений
 
+var htmlTemplate = {
+    postStart: '',
+    postEnd: ''
+};
+
+
 
 function upd_group_list(data) {
     // ОБНОВЛЕНИЯ СПИСКА ГРУПП В ВЫПАДАЮЩЕМ СПИСКЕ
@@ -28,7 +34,7 @@ function upd_group_list(data) {
     $(selGroups).empty();  // очищаем список
     for (var i = 0; i < groups.length; i++) {
         var group = groups[i];
-        options += '<option value="-' + group['id'] + '">' + group['name'] + '</option>';
+        options += '<option value="-{0}">{1}</option>'.format(group['id'], group['name']);
     }
     $(selGroups).append(options);
     $(btnExec).prop("disabled", false);
@@ -128,7 +134,7 @@ function make_post(post) {
         //listVideo = post['attachments'].filter(function(attach) {
         //return attach.type == 'video'
         //});
-        
+
         if (listPhoto.length > 0) {
             // console.log('Изображения: ', listPhoto);
             // начало блока
@@ -157,9 +163,8 @@ function make_post(post) {
             code += '<div class="list-group-item">';
             for (k = 0; k < listAudio.length; k++) {
                 var audio = listAudio[k]['audio'];
-                // если не указан url аудиозаписи
-                if (audio.url == 0) {continue}
-                code += '<audio src="' + audio.url + '" controls></audio>';
+                if (audio['url'] == 0) {continue}  // если не указан url аудиозаписи
+                code += '<audio src="' + audio['url'] + '" controls></audio>';
             }
             // конец блока
             code += '</div>';
