@@ -46,8 +46,6 @@ var htmlTemplate = {
     blockAudioEnd:      '</div>'
 };
 
-var i, j, k;
-
 
 function upd_group_list(data) {
     // ОБНОВЛЕНИЯ СПИСКА ГРУПП В ВЫПАДАЮЩЕМ СПИСКЕ
@@ -80,7 +78,7 @@ function displayPosts() {
     }
     // расчёт скорости набора лайков
     var currentTime= new Date().getTime() / 1000;
-    for (i = 0; i < posts.length; i++) {
+    for (var i = 0; i < posts.length; i++) {
         // скорость = количество лайков / (текущая дата - дата публикации записи) [1/день]
         posts[i]['speed'] = Number((posts[i]['likes']['count'] / (currentTime - posts[i]['date']) * 86400).toFixed(2));
     }
@@ -96,8 +94,8 @@ function displayPosts() {
     }
     console.log('На вывод: ', posts);
     var code = '';
-    for (i = 0; i < countOut; i++) {
-        code += make_post(posts[i])
+    for (var k = 0; k < countOut; k++) {
+        code += make_post(posts[k]);
     }
 
     $(divPosts).append($( code ));
@@ -162,14 +160,14 @@ function make_post(post) {
             // console.log('Изображения: ', listPhoto);
             // начало блока
             code += htmlTemplate.blockPhotoStart;
-            for (j = 0; j < listPhoto.length; j++) {
+            for (var j = 0; j < listPhoto.length; j++) {
                 var photo = listPhoto[j]['photo'];
                 // поиск версии изображения с наибольшим разрешением
                 var linkBigPhoto;
                 var resolution = [2560, 1280, 807, 604, 130, 75];  // возможные разрешения
-                for (k = 0; k < resolution.length; k++) {
-                    if (photo['photo_' + resolution[k]]) {
-                        linkBigPhoto = photo['photo_' + resolution[k]];
+                for (var m = 0; m < resolution.length; m++) {
+                    if (photo['photo_' + resolution[m]]) {
+                        linkBigPhoto = photo['photo_' + resolution[m]];
                         break;
                     }
                 }
@@ -185,8 +183,8 @@ function make_post(post) {
             // console.log('Аудио: ', listAudio);
             // начало блока
             code += htmlTemplate.blockAudioStart;
-            for (j = 0; j < listAudio.length; j++) {
-                var audio = listAudio[j]['audio'];
+            for (var q = 0; q < listAudio.length; q++) {
+                var audio = listAudio[q]['audio'];
                 if (audio['url'] == 0) {continue}  // если не указан url аудиозаписи
                 code += htmlTemplate.audio.format(audio['url']);
             }
@@ -333,7 +331,7 @@ $(btnExec).click(function() {
 // кнопка отображения дополнительных постов (+10)
 $(btnAddPosts).click( function () {
     var code = '';
-    for (var i = 0; i < 10; i++) {
+    for (var n = 0; n < 10; n++) {
         countOut += 1;
         if (posts.length <= countOut) {
             $(btnAddPosts).prop("disabled", true);
