@@ -328,37 +328,37 @@ $(btnExec).click(function() {
 
 
 // кнопка отображения дополнительных постов (+10)
-// console.log($(window).scrollTop(), $(window).height());
-console.log($("html").scrollTop(), $("html").height());
-$("html").scroll(function () {
-    console.log($("html").scrollTop(), $("html").height());
-    if ($("html").scrollTop() >= $("html").height() * 0.7) {
-        code = '';
-        for (var n = 0; n < 10; n++) {
-            countOut += 1;
-            if (posts.length <= countOut) {
-                $(btnAddPosts).prop("disabled", true);
-                break;
-            }
-            make_post(posts[countOut]);
-        }
-        $(divPosts).append(code);
-        resize_frame();
-    }
-});
-// $(btnAddPosts).click( function () {
-//     code = '';
-//     for (var n = 0; n < 10; n++) {
-//         countOut += 1;
-//         if (posts.length <= countOut) {
-//             $(btnAddPosts).prop("disabled", true);
-//             break;
+// // console.log($(window).scrollTop(), $(window).height());
+// console.log($("html").scrollTop(), $("html").height());
+// $("html").scroll(function () {
+//     console.log($("html").scrollTop(), $("html").height());
+//     if ($("html").scrollTop() >= $("html").height() * 0.7) {
+//         code = '';
+//         for (var n = 0; n < 10; n++) {
+//             countOut += 1;
+//             if (posts.length <= countOut) {
+//                 $(btnAddPosts).prop("disabled", true);
+//                 break;
+//             }
+//             make_post(posts[countOut]);
 //         }
-//         make_post(posts[countOut]);
+//         $(divPosts).append(code);
+//         resize_frame();
 //     }
-//     $(divPosts).append(code);
-//     resize_frame();
 // });
+$(btnAddPosts).click( function () {
+    code = '';
+    for (var n = 0; n < 10; n++) {
+        countOut += 1;
+        if (posts.length <= countOut) {
+            $(btnAddPosts).prop("disabled", true);
+            break;
+        }
+        make_post(posts[countOut]);
+    }
+    $(divPosts).append(code);
+    resize_frame();
+});
 
 
 // очищение поля для ссылки при выборе группы из выпад. списка
