@@ -329,7 +329,7 @@ $(btnExec).click(function() {
 
 // кнопка отображения дополнительных постов (+10)
 $(window).scroll(function () {
-    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+    if ($(window).scrollTop() + $(window).height() > $('#footer').offset().top) {
         code = '';
         for (var n = 0; n < 10; n++) {
             countOut += 1;
