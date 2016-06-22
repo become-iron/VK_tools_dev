@@ -116,7 +116,7 @@ function make_post(post) {
         post (object) - запись*/
 
     function zfill(val) {
-        // ДОБАВЛЕНИЕ НУЛЯ ПЕРЕД ЧИСЛОМ
+        // ДОПОЛНЕНИЕ ЧИСЛА НУЛЁМ СЛЕВА ПРИ НЕОБХОДИМОСТИ
         val = String(val);
         return (val.length == 1) ? '0' + val : val;
     }
@@ -328,19 +328,34 @@ $(btnExec).click(function() {
 
 
 // кнопка отображения дополнительных постов (+10)
-$(btnAddPosts).click( function () {
-    code = '';
-    for (var n = 0; n < 10; n++) {
-        countOut += 1;
-        if (posts.length <= countOut) {
-            $(btnAddPosts).prop("disabled", true);
-            break;
+$(window).scroll(function () {
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+        code = '';
+        for (var n = 0; n < 10; n++) {
+            countOut += 1;
+            if (posts.length <= countOut) {
+                $(btnAddPosts).prop("disabled", true);
+                break;
+            }
+            make_post(posts[countOut]);
         }
-        make_post(posts[countOut]);
+        $(divPosts).append(code);
+        resize_frame();
     }
-    $(divPosts).append(code);
-    resize_frame();
 });
+// $(btnAddPosts).click( function () {
+//     code = '';
+//     for (var n = 0; n < 10; n++) {
+//         countOut += 1;
+//         if (posts.length <= countOut) {
+//             $(btnAddPosts).prop("disabled", true);
+//             break;
+//         }
+//         make_post(posts[countOut]);
+//     }
+//     $(divPosts).append(code);
+//     resize_frame();
+// });
 
 
 // очищение поля для ссылки при выборе группы из выпад. списка
