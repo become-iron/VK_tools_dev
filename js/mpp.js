@@ -329,6 +329,7 @@ $(btnExec).click(function() {
 
 // кнопка отображения дополнительных постов (+10)
 $(window).scroll(function () {
+    console.log($(window).scrollTop(), $(window).height());
     if ($(window).scrollTop() >= $(window).height() * 0.7) {
         code = '';
         for (var n = 0; n < 10; n++) {
