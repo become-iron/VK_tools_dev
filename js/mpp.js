@@ -1,4 +1,4 @@
-// элементы страницы
+﻿// элементы страницы
 var selGroups = '#groups';
 var inpOwner = '#groupID';
 var btnExec = 'input#execute';
@@ -40,6 +40,9 @@ var htmlTemplate = {
                         '</p>' +
                         '</div></div>',
     blockPhotoStart:    '<div class="list-group-item"><div class="row">',
+    blockPhoto:         '<div class="col-xs-2">' +
+                            '<a href="{0}" target="_blank"><img src="{1}" width="auto" height="70"></a>' +
+                        '</div>',
     blockPhotoEnd:      '</div></div>',
     blockAudioStart:    '<div class="list-group-item">',
     audio:              '<audio src="{0}" controls></audio>',
@@ -96,6 +99,7 @@ function displayPosts() {
 
     code = '';
     for (var k = 0; k < countOut; k++) {
+	if (posts[k] === undefined) {break;}
         make_post(posts[k]);
     }
 
@@ -172,9 +176,10 @@ function make_post(post) {
                     }
                 }
                 // TODO
-                code += '<div class="col-xs-2">' +
-                            '<a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo['photo_130'] ? photo['photo_130'] : photo['photo_75']) + '" width="auto" height="70"></a>' +
-                        '</div>';
+                code += htmlTemplate.blockPhoto.format(linkBigPhoto, photo['photo_130'] ? photo['photo_130'] : photo['photo_75']);
+                // code += '<div class="col-xs-2">' +
+                //             '<a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo['photo_130'] ? photo['photo_130'] : photo['photo_75']) + '" width="auto" height="70"></a>' +
+                //         '</div>';
             }
             // конец блока
             code += htmlTemplate.blockPhotoEnd;
@@ -327,25 +332,6 @@ $(btnExec).click(function() {
 });
 
 
-// кнопка отображения дополнительных постов (+10)
-// // console.log($(window).scrollTop(), $(window).height());
-// console.log($("html").scrollTop(), $("html").height());
-// $("html").scroll(function () {
-//     console.log($("html").scrollTop(), $("html").height());
-//     if ($("html").scrollTop() >= $("html").height() * 0.7) {
-//         code = '';
-//         for (var n = 0; n < 10; n++) {
-//             countOut += 1;
-//             if (posts.length <= countOut) {
-//                 $(btnAddPosts).prop("disabled", true);
-//                 break;
-//             }
-//             make_post(posts[countOut]);
-//         }
-//         $(divPosts).append(code);
-//         resize_frame();
-//     }
-// });
 $(btnAddPosts).click( function () {
     code = '';
     for (var n = 0; n < 10; n++) {
