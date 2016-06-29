@@ -103,19 +103,27 @@ function display_posts() {
         // сортировка записей
         // TODO WARN оптимизировать
         var sorts = {byLikes: 'likes.count',
-                 byReposts: 'reposts.count',
-                 byComments: 'comments.count',
-                 bySpeed: 'speed',
-                 byTimeDesc: 'date',
-                 byTimeAsc: 'date' //TODO
+                     byReposts: 'reposts.count',
+                     byComments: 'comments.count',
+                     bySpeed: 'speed',
+                     byTimeDesc: 'date',
+                     byTimeAsc: 'date' //TODO
         };
-        console.log(sorts[typeOfSort], typeof sorts[typeOfSort]);
-        eval('posts.sort(function (a, b) {' +
-                 'if (a.' + sorts[typeOfSort] + ' < b.' + sorts[typeOfSort] + ') return 1;' +
-                 'else if (a.' + sorts[typeOfSort] + ' > b.' + sorts[typeOfSort] + ') return -1;' +
-                 'else return 0;' +
-             '});'
-        );
+        if (typeOfSort == 'byTimeAsc') {
+            posts.sort(function (a, b) {
+                           if (a['date'] > b['date']) return 1;
+                           else if (a['date'] < b['date']) return -1;
+                           else return 0;
+                       });
+        }
+        else {
+            eval('posts.sort(function (a, b) {' +
+                'if (a.' + sorts[typeOfSort] + ' < b.' + sorts[typeOfSort] + ') return 1;' +
+                'else if (a.' + sorts[typeOfSort] + ' > b.' + sorts[typeOfSort] + ') return -1;' +
+                'else return 0;' +
+                '});'
+            );
+        }
         // if (typeOfSort == 'byLikes') {
         //     posts.sort(function (a, b) {
         //         if (a['likes']['count'] < b['likes']['count']) return 1;
