@@ -159,7 +159,9 @@ function display_posts() {
         }
 
         $(divPosts).append($(code));
-        $(btnAddPosts).css("display", 'inline-block');
+        if (posts.length > countOut) {
+            $(btnAddPosts).css("display", 'inline-block');
+        }
     }
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
@@ -169,6 +171,7 @@ function display_posts() {
 
 
 function make_post(post) {
+    console.time('test');
     /* ГЕНЕРАЦИЯ HTML-КОДА ДЛЯ ПОСТА
     Добавляет HTML-код для вывода постов в глобальную переменную code
     Принимает:
@@ -269,6 +272,7 @@ function make_post(post) {
                                         date,
                                         post['from_id'],
                                         post['id']);
+    console.timeEnd('test');
 }
 
 
