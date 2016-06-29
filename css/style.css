@@ -22,7 +22,7 @@
 
 .photo-block img{
     display: block;
-    height: auto;
+    height: 70px;
     max-width: 100%;
 }
 
