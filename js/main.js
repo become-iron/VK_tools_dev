@@ -1,6 +1,6 @@
-var apiVersion = '5.44';
+var apiVersion = '5.52';  // используемая версия API VK
 var widthFrame = 630;  // ширина фрейма
-var storage = false;
+var storage = false;  // доступность localstorage
 
 
 // ИНИЦИАЛИЗАЦИЯ API
@@ -14,11 +14,17 @@ function on_success() {
     console.info('MPP. Инициализация API прошла успешно');
     resize_frame();
     // получаем список групп юзера
-    VK.api(
-        'groups.get',
-        {filter: 'groups, publics, events', extended: 1},
-        upd_group_list
-    );
+    // TEMP
+    if (tabCode == 'mpp') {
+        VK.api(
+            'groups.get',
+            {filter: 'groups, publics, events', extended: 1},
+            upd_group_list
+        );
+    }
+    else if (tabCode == 'changes') {
+        analyseChanges();
+    }
 }
 
 
@@ -28,12 +34,14 @@ function on_fail() {
 }
 
 
-function isError(data) {
+function is_error(data) {
+    // TODO добавить возможность прикрепления сообщения
     // ПРОВЕРКА НА ОШИБКУ
     if (data['error']) {
         var txtError = data['error']['error_code'] + ' ' + data['error']['error_msg'];
         alert('Произошла ошибка: ' + txtError);
         console.error('MPP. Ошибка:', txtError, data);
+        
         // разблокировка кнопки выборки
         $(btnExec).val('Произвести выборку');
         $(btnExec).prop("disabled", false);
@@ -71,7 +79,7 @@ function supports_storage() {
 function clear_storage() {
     // ПОЛНАЯ ОЧИСТКА WEB STORAGE
     sessionStorage.clear();
-    console.info('История очищена')
+    console.info('Данные приложения в LocalStorage удалены');
 }
 
 
@@ -81,11 +89,45 @@ if (!String.prototype.format) {
     String.prototype.format = function() {
         var args = arguments;
         return this.replace(/{(\d+)}/g, function(match, number) {
-            return typeof args[number] != 'undefined'
-                ? args[number]
-                : match
-                ;
-        });
-    };
+            return typeof args[number] != 'undefined' ? args[number] : match;
+        } );
+    }
 }
 
+
+// Разность массивов
+// https://habrahabr.ru/post/248229/
+function diff(A, B) {
+    var M = A.length, N = B.length, c = 0, C = [];
+    for (var i = 0; i < M; i++)
+    {
+        var j = 0, k = 0;
+        while (B[j] !== A[ i ] && j < N) j++;
+        while (C[k] !== A[ i ] && k < c) k++;
+        if (j == N && k == c) C[c++] = A[ i ];
+    }
+    return C;
+}
+
+
+function api_query(query, params, func) {
+    /* Обёртка для выполнения запроса к API VK
+    Принимает:
+        query (String)
+        params (Object)
+        func (function)
+    */
+    if (func == undefined) {
+        func = function(data) {
+                   if (is_error(data)) {return}
+                   val = data['response']['items']
+               }
+    }
+    var val;
+    VK.api(
+        query,
+        params,
+        func
+    );
+    return val;
+}

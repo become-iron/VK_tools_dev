@@ -1,7 +1,9 @@
-﻿// элементы страницы
+﻿var tabCode = 'mpp';  // TEMP
+
+// элементы страницы
 var selGroups = '#groups';
 var inpOwner = '#groupID';
-var btnExec = 'input#execute';
+var btnExec = '#execute';
 var selFilter = '#filter';
 var divPosts = "#posts";  // контейнер для постов
 var inpCount = '#count';  // количество записи для поиска
@@ -9,7 +11,7 @@ var inpCountOut = '#countOut';  // количество записей для в
 var inpOffset = '#offset';  // смещение записей
 var selSort = '#sort';
 var chbIsContent = '#isContent';
-var btnAddPosts = '#btn_add_posts';
+var btnAddPosts = '#btnAddPosts';
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
 
@@ -52,7 +54,7 @@ var htmlTemplate = {
 
 function upd_group_list(data) {
     // ОБНОВЛЕНИЯ СПИСКА ГРУПП В ВЫПАДАЮЩЕМ СПИСКЕ
-    if (isError(data)) return;
+    if (is_error(data)) return;
     var groups = data['response']['items'];
     // добавляем группы в выпадающий список
     var options = '';
@@ -66,14 +68,14 @@ function upd_group_list(data) {
 }
 
 
-function displayPosts() {
+function display_posts() {
     // ВЫВОД ПОСТОВ
     countOut = Number($(inpCountOut).val());
     typeOfSort = $(selSort).val();  // вид сортировки
     isContent = $(chbIsContent).prop("checked");  // необходимость показа прикреплений
 
     console.log('Записи: ', posts);
-    if (isError(posts)) return;
+    if (is_error(posts)) return;
     $(divPosts).empty();
     if (posts.length == 0) {
         alert('Записей не найдено');
@@ -114,7 +116,7 @@ function displayPosts() {
 
 
 function make_post(post) {
-    /* СОЗДАНИЕ HTML-КОДА ДЛЯ ПОСТА
+    /* ГЕНЕРАЦИЯ HTML-КОДА ДЛЯ ПОСТА
     Добавляет HTML-код для вывода постов в глобальную переменную code
     Принимает:
         post (object) - запись*/
@@ -162,7 +164,6 @@ function make_post(post) {
 
         if (listPhoto.length > 0) {
             // console.log('Изображения: ', listPhoto);
-            // начало блока
             code += htmlTemplate.blockPhotoStart;
             for (var j = 0; j < listPhoto.length; j++) {
                 var photo = listPhoto[j]['photo'];
@@ -175,25 +176,18 @@ function make_post(post) {
                         break;
                     }
                 }
-                // TODO
                 code += htmlTemplate.blockPhoto.format(linkBigPhoto, photo['photo_130'] ? photo['photo_130'] : photo['photo_75']);
-                // code += '<div class="col-xs-2">' +
-                //             '<a href="' + linkBigPhoto + '" target="_blank"><img src="' + (photo['photo_130'] ? photo['photo_130'] : photo['photo_75']) + '" width="auto" height="70"></a>' +
-                //         '</div>';
             }
-            // конец блока
             code += htmlTemplate.blockPhotoEnd;
         }
         if (listAudio.length > 0) {
             // console.log('Аудио: ', listAudio);
-            // начало блока
             code += htmlTemplate.blockAudioStart;
             for (var q = 0; q < listAudio.length; q++) {
                 var audio = listAudio[q]['audio'];
                 if (audio['url'] == 0) {continue}  // если не указан url аудиозаписи
                 code += htmlTemplate.audio.format(audio['url']);
             }
-            // конец блока
             code += htmlTemplate.blockAudioEnd;
         }
 
@@ -308,7 +302,7 @@ $(btnExec).click(function() {
             {code: query},
             function(data) {
                 posts = data['response'];
-                displayPosts();
+                display_posts();
             }
         );
     }
@@ -319,15 +313,17 @@ $(btnExec).click(function() {
         var params = (id.length > 0)
                      ? {owner_id: id, count: count, filter: filter, offset: offset}
                      : {domain: domain, count: count, filter: filter, offset: offset};
-        VK.api(
-            'wall.get',
-            params,
-            function(data) {
-                if (isError(data)) return;
-                posts = data['response']['items'];
-                displayPosts();
-            }
-        );
+        posts = api_query('wall.get', params);
+        display_posts();
+        // VK.api(
+        //     'wall.get',
+        //     params,
+        //     function(data) {
+        //         if (is_error(data)) {return}
+        //         posts = data['response']['items'];
+        //         display_posts();
+        //     }
+        // );
     }
 });
 
