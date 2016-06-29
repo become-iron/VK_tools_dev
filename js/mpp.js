@@ -92,14 +92,18 @@ function display_posts() {
     typeOfSort = $(selSort).val();  // вид сортировки
     isContent = $(chbIsContent).prop("checked");  // необходимость показа прикреплений
 
+    $(divPosts).empty();
+
     console.log('Записи: ', posts);
     if (is_error(posts)) {
         $(btnExec).prop("disabled", false);
         $(btnExec).val('Произвести выборку');
         return;
     }
-    $(divPosts).empty();
     if (posts.length == 0) {
+        $(btnExec).prop("disabled", false);
+        $(btnExec).val('Произвести выборку');
+        console.info('MPP. Записей не найдено');
         alert('Записей не найдено');
         return;
     }
@@ -275,7 +279,6 @@ function make_post(post) {
                                         post['from_id'],
                                         post['id']);
 }
-
 
 
 // ПОЛУЧЕНИЕ СПИСКА ЗАПИСЕЙ
