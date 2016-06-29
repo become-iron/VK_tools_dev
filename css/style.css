@@ -5,7 +5,7 @@
     padding-right: 1px;
     margin-bottom: 7px;
 }
-.action {
+.action, .action:hover, .action:active, .action:focus {
     color: #2F5879;
     background-color: #fff;
     padding: 3px 4px;
