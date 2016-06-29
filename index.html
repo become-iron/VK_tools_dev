@@ -13,7 +13,12 @@
     <form class="form-horizontal">
         <div class="form-group">
             <div class="col-xs-offset-1 col-xs-10">
-                <select id="groups" class="form-control input-sm"></select>
+                <div class="input-group">
+                    <select id="groups" class="form-control input-sm"></select>
+                    <span class="input-group-btn" title="Обновить список групп">
+                        <button class="btn btn-default" type="button" onclick="upd_group_list()"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                    </span>
+                </div>
                 <div class="input-group" style="margin-top: 7px;">
                     <input type="text" id="groupID" class="form-control" placeholder="ID/ссылка пользователя/сообщества">
                     <span class="input-group-btn" title="Сбросить поле">
