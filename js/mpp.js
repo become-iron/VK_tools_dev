@@ -159,11 +159,11 @@ function display_posts() {
         }
 
         $(divPosts).append($(code));
+        $(btnAddPosts).css("display", 'inline-block');
     }
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
-    $(btnAddPosts).css("display", 'inline-block');
     resize_frame();
 }
 
