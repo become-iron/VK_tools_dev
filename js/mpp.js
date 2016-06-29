@@ -124,8 +124,8 @@ function display_posts() {
     else if (typeOfSort == 'byComments') {
         // сначала новые
         posts.sort(function (a, b) {
-            if (a['comments']['count'] > b['comments']['count']) return 1;
-            else if (a['comments']['count'] < b['comments']['count']) return -1;
+            if (a['comments']['count'] < b['comments']['count']) return 1;
+            else if (a['comments']['count'] > b['comments']['count']) return -1;
             else return 0;
         });
     }
@@ -136,7 +136,7 @@ function display_posts() {
             else return 0;
         });
     }
-    else if (typeOfSort == 'byTimeAsc') {
+    else if (typeOfSort == 'byTimeDesc') {
         posts.sort(function (a, b) {
             // сначала старые
             if (a['date'] < b['date']) return 1;
@@ -144,7 +144,7 @@ function display_posts() {
             else return 0;
         });
     }
-    else if (typeOfSort == 'byTimeDesc') {
+    else if (typeOfSort == 'byTimeAsc') {
         // сначала новые
         posts.sort(function (a, b) {
             if (a['date'] > b['date']) return 1;
