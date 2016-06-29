@@ -77,12 +77,6 @@ function upd_group_list() {
             }
         }
     );
-    // console.log(groups);
-    // if (groups === undefined) {
-    //     $(btnExec).prop("disabled", false);
-    //     return;
-    // }
-
 }
 
 
@@ -95,80 +89,77 @@ function display_posts() {
     $(divPosts).empty();
 
     console.log('Записи: ', posts);
-    if (is_error(posts)) {
-        $(btnExec).prop("disabled", false);
-        $(btnExec).val('Произвести выборку');
-        return;
-    }
     if (posts.length == 0) {
-        $(btnExec).prop("disabled", false);
-        $(btnExec).val('Произвести выборку');
         console.info('MPP. Записей не найдено');
         alert('Записей не найдено');
         return;
     }
-    // расчёт скорости набора лайков
-    var currentTime= new Date().getTime() / 1000;
-    for (var i = 0; i < posts.length; i++) {
-        // скорость = количество лайков / (текущая дата - дата публикации записи) [1/день]
-        posts[i]['speed'] = Number((posts[i]['likes']['count'] / (currentTime - posts[i]['date']) * 86400).toFixed(2));
-    }
-    // сортировка записей
-    // TODO оптимизировать
-    if (typeOfSort == 'byLikes') {
-        posts.sort(function (a, b) {
-            if (a['likes']['count'] < b['likes']['count']) return 1;
-            else if (a['likes']['count'] > b['likes']['count']) return -1;
-            else return 0;
-        });
-    }
-    else if (typeOfSort == 'byReposts'){
-        posts.sort(function (a, b) {
-            if (a['reposts']['count'] < b['reposts']['count']) return 1;
-            else if (a['reposts']['count'] > b['reposts']['count']) return -1;
-            else return 0;
-        });
-    }
-    else if (typeOfSort == 'byComments') {
-        // сначала новые
-        posts.sort(function (a, b) {
-            if (a['comments']['count'] < b['comments']['count']) return 1;
-            else if (a['comments']['count'] > b['comments']['count']) return -1;
-            else return 0;
-        });
-    }
-    else if (typeOfSort == 'bySpeed') {
-        posts.sort(function (a, b) {
-            if (a['speed'] < b['speed']) return 1;
-            else if (a['speed'] > b['speed']) return -1;
-            else return 0;
-        });
-    }
-    else if (typeOfSort == 'byTimeDesc') {
-        posts.sort(function (a, b) {
+    else if (!is_error(posts)) {
+        // расчёт скорости набора лайков
+        var currentTime = new Date().getTime() / 1000;
+        for (var i = 0; i < posts.length; i++) {
+            // скорость = количество лайков / (текущая дата - дата публикации записи) [1/день]
+            posts[i]['speed'] = Number((posts[i]['likes']['count'] / (currentTime - posts[i]['date']) * 86400).toFixed(2));
+        }
+        // сортировка записей
+        // TODO оптимизировать
+        if (typeOfSort == 'byLikes') {
+            posts.sort(function (a, b) {
+                if (a['likes']['count'] < b['likes']['count']) return 1;
+                else if (a['likes']['count'] > b['likes']['count']) return -1;
+                else return 0;
+            });
+        }
+        else if (typeOfSort == 'byReposts') {
+            posts.sort(function (a, b) {
+                if (a['reposts']['count'] < b['reposts']['count']) return 1;
+                else if (a['reposts']['count'] > b['reposts']['count']) return -1;
+                else return 0;
+            });
+        }
+        else if (typeOfSort == 'byComments') {
             // сначала новые
-            if (a['date'] < b['date']) return 1;
-            else if (a['date'] > b['date']) return -1;
-            else return 0;
-        });
-    }
-    else if (typeOfSort == 'byTimeAsc') {
-        // сначала старые
-        posts.sort(function (a, b) {
-            if (a['date'] > b['date']) return 1;
-            else if (a['date'] < b['date']) return -1;
-            else return 0;
-        });
-    }
-    console.log('На вывод: ', posts);
+            posts.sort(function (a, b) {
+                if (a['comments']['count'] < b['comments']['count']) return 1;
+                else if (a['comments']['count'] > b['comments']['count']) return -1;
+                else return 0;
+            });
+        }
+        else if (typeOfSort == 'bySpeed') {
+            posts.sort(function (a, b) {
+                if (a['speed'] < b['speed']) return 1;
+                else if (a['speed'] > b['speed']) return -1;
+                else return 0;
+            });
+        }
+        else if (typeOfSort == 'byTimeDesc') {
+            posts.sort(function (a, b) {
+                // сначала новые
+                if (a['date'] < b['date']) return 1;
+                else if (a['date'] > b['date']) return -1;
+                else return 0;
+            });
+        }
+        else if (typeOfSort == 'byTimeAsc') {
+            // сначала старые
+            posts.sort(function (a, b) {
+                if (a['date'] > b['date']) return 1;
+                else if (a['date'] < b['date']) return -1;
+                else return 0;
+            });
+        }
+        console.log('На вывод: ', posts);
 
-    code = '';
-    for (var k = 0; k < countOut; k++) {
-	if (posts[k] === undefined) {break;}
-        make_post(posts[k]);
-    }
+        code = '';
+        for (var k = 0; k < countOut; k++) {
+            if (posts[k] === undefined) {
+                break;
+            }
+            make_post(posts[k]);
+        }
 
-    $(divPosts).append($( code ));
+        $(divPosts).append($(code));
+    }
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
@@ -282,7 +273,7 @@ function make_post(post) {
 
 
 // ПОЛУЧЕНИЕ СПИСКА ЗАПИСЕЙ
-$(btnExec).click(function() {
+$(btnExec).click( function() {
     // блокировка кнопки выборки
     $(btnExec).prop("disabled", true);
     $(btnExec).val('[ обновляется ]');
@@ -359,9 +350,10 @@ $(btnExec).click(function() {
             'wall.get',
             params,
             function(data) {
-                if (is_error(data)) {return}
-                posts = data['response']['items'];
-                display_posts();
+                if (!is_error(data)) {
+                    posts = data['response']['items'];
+                    display_posts();
+                }
             }
         );
     }
