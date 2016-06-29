@@ -52,10 +52,23 @@ var htmlTemplate = {
 };
 
 
-function upd_group_list(data) {
+function upd_group_list() {
     // ОБНОВЛЕНИЯ СПИСКА ГРУПП В ВЫПАДАЮЩЕМ СПИСКЕ
-    if (is_error(data)) return;
-    var groups = data['response']['items'];
+    $(btnExec).prop("disabled", true);
+    var groups;
+    VK.api(
+        'groups.get',
+        {filter: 'groups, publics, events', extended: 1},
+        function (data) {
+            if (!is_error(data)) {
+                groups = data['response']['items'];
+            }
+        }
+    );
+    if (group === undefined) {
+        $(btnExec).prop("disabled", false);
+        return;
+    }
     // добавляем группы в выпадающий список
     var options = '';
     $(selGroups).empty();  // очищаем список
@@ -109,7 +122,6 @@ function display_posts() {
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
-    $(btnAddPosts).prop("disabled", false);
     $(btnAddPosts).css("display", 'inline-block');
     resize_frame();
 }
@@ -331,7 +343,7 @@ $(btnAddPosts).click( function () {
     for (var n = 0; n < 10; n++) {
         countOut += 1;
         if (posts.length <= countOut) {
-            $(btnAddPosts).prop("disabled", true);
+            $(btnAddPosts).css("display", 'none');
             break;
         }
         make_post(posts[countOut]);

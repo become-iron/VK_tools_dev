@@ -16,11 +16,7 @@ function on_success() {
     // получаем список групп юзера
     // TEMP
     if (tabCode == 'mpp') {
-        VK.api(
-            'groups.get',
-            {filter: 'groups, publics, events', extended: 1},
-            upd_group_list
-        );
+        upd_group_list();
     }
     else if (tabCode == 'changes') {
         analyseChanges();
@@ -111,24 +107,24 @@ function diff(A, B) {
 }
 
 
-// function api_query(query, params, func) {
-//     /* Обёртка для выполнения запроса к API VK
-//     Принимает:
-//         query (String)
-//         params (Object)
-//         func (function)
-//     */
-//     if (func == undefined) {
-//         func = function(data) {
-//                    if (is_error(data)) {return}
-//                    val = data['response']['items']
-//                }
-//     }
-//     var val;
-//     VK.api(
-//         query,
-//         params,
-//         func
-//     );
-//     return val;
-// }
+function api_query(query, params, func) {
+    /* Обёртка для выполнения запроса к API VK
+    Принимает:
+        query (String)
+        params (Object)
+        func (function)
+    */
+    if (func == undefined) {
+        func = function(data) {
+                   if (is_error(data)) {return}
+                   val = data['response']['items']
+               }
+    }
+    var val;
+    VK.api(
+        query,
+        params,
+        func
+    );
+    return val;
+}
