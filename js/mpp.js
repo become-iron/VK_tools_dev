@@ -81,6 +81,7 @@ function upd_group_list() {
 
 
 function display_posts() {
+    console.time('вывод постов');
     // ВЫВОД ПОСТОВ
     countOut = Number($(inpCountOut).val());
     typeOfSort = $(selSort).val();  // вид сортировки
@@ -167,11 +168,12 @@ function display_posts() {
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
     resize_frame();
+    console.timeEnd('вывод постов');
 }
 
 
 function make_post(post) {
-    console.time('test');
+    console.time('создание поста');
     /* ГЕНЕРАЦИЯ HTML-КОДА ДЛЯ ПОСТА
     Добавляет HTML-код для вывода постов в глобальную переменную code
     Принимает:
@@ -272,7 +274,7 @@ function make_post(post) {
                                         date,
                                         post['from_id'],
                                         post['id']);
-    console.timeEnd('test');
+    console.timeEnd('создание поста');
 }
 
 
