@@ -102,12 +102,12 @@ function display_posts() {
         }
         // сортировка записей
         // TODO WARN оптимизировать
-        sorts = {byLikes: 'likes.count',
+        var sorts = {byLikes: 'likes.count',
                  byReposts: 'reposts.count',
                  byComments: 'comments.count',
                  bySpeed: 'speed',
-                 byTimeDesc: 'date'
-                 // byTimeAsc: 'date'
+                 byTimeDesc: 'date',
+                 byTimeAsc: 'date' //TODO
         };
         eval('posts.sort(function (a, b) {' +
                  'if (a.{0} < b.{0}) return 1;' +
