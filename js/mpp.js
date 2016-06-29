@@ -110,7 +110,7 @@ function display_posts() {
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
     $(btnAddPosts).prop("disabled", false);
-    // $(btnAddPosts).css("display", 'inline-block');
+    $(btnAddPosts).css("display", 'inline-block');
     resize_frame();
 }
 
