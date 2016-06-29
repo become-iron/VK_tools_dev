@@ -92,7 +92,6 @@ function display_posts() {
     if (posts.length == 0) {
         console.info('MPP. Записей не найдено');
         alert('Записей не найдено');
-        return;
     }
     else if (!is_error(posts)) {
         // расчёт скорости набора лайков
@@ -152,6 +151,7 @@ function display_posts() {
 
         code = '';
         for (var k = 0; k < countOut; k++) {
+            // если постов на вывод больше реального их количества
             if (posts[k] === undefined) {
                 break;
             }
