@@ -1,6 +1,9 @@
 .container {
     margin-top: 5px;
 }
+.input-sm,.form-control, .btn {
+    height: 30px;
+}
 .form-group {
     padding-right: 1px;
     margin-bottom: 7px;
@@ -13,22 +16,11 @@
 .post-link:hover, .post-link:active, .post-link:focus {
     background-color: #E9EDF1;
 }
-.marked {
-    color: #2F5879;
-}
 .list-group-item {
     padding: 5px 7px;
 }
-.embed-responsive {
-    margin-top: 1px;
-}
-
 #btnAddPosts {
     margin-top: -5px;
     margin-bottom: 10px;
     display: none;
-}
-
-.input-sm,.form-control, .btn {
-    height: 30px;
 }

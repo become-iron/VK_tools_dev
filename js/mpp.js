@@ -30,13 +30,16 @@ var htmlTemplate = {
                             '<button title="Репосты" class="btn action" type="button" disabled="disabled">' +
                                '<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> {1}' +
                             '</button>' +
+                            '<button title="Комментарии" class="btn action" type="button" disabled="disabled">' +
+                            '<span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {2}' +
+                            '</button>' +
                             '<button title="Скорость" class="btn action" type="button" disabled="disabled">' +
-                               '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> {2}' +
+                               '<span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> {3}' +
                             '</button>' +
                         '</p>' +
                         '<p class="list-group-item">' +
-                            '<span title="Дата создания записи" class="action">{3}</span>' +
-                            '<a title="Открыть запись в новом окне" class="btn action post-link" href="https://vk.com/wall{4}_{5}" target="_blank" role="button">' +
+                            '<span title="Дата создания записи" class="action">{4}</span>' +
+                            '<a title="Открыть запись в новом окне" class="btn action post-link" href="https://vk.com/wall{5}_{6}" target="_blank" role="button">' +
                                 'Перейти к записи' +
                             '</a>' +
                         '</p>' +
@@ -103,14 +106,51 @@ function display_posts() {
         posts[i]['speed'] = Number((posts[i]['likes']['count'] / (currentTime - posts[i]['date']) * 86400).toFixed(2));
     }
     // сортировка записей
+    // TODO оптимизировать
     if (typeOfSort == 'byLikes') {
-        posts.sort(sort_RevByLikes);
+        posts.sort(function (a, b) {
+            if (a['likes']['count'] < b['likes']['count']) return 1;
+            else if (a['likes']['count'] > b['likes']['count']) return -1;
+            else return 0;
+        });
     }
     else if (typeOfSort == 'byReposts'){
-        posts.sort(sort_RevByReposts);
+        posts.sort(function (a, b) {
+            if (a['reposts']['count'] < b['reposts']['count']) return 1;
+            else if (a['reposts']['count'] > b['reposts']['count']) return -1;
+            else return 0;
+        });
+    }
+    else if (typeOfSort == 'byComments') {
+        // сначала новые
+        posts.sort(function (a, b) {
+            if (a['comments']['count'] > b['comments']['count']) return 1;
+            else if (a['comments']['count'] < b['comments']['count']) return -1;
+            else return 0;
+        });
     }
     else if (typeOfSort == 'bySpeed') {
-        posts.sort(sort_RevBySpeed);
+        posts.sort(function (a, b) {
+            if (a['speed'] < b['speed']) return 1;
+            else if (a['speed'] > b['speed']) return -1;
+            else return 0;
+        });
+    }
+    else if (typeOfSort == 'byTimeAsc') {
+        posts.sort(function (a, b) {
+            // сначала старые
+            if (a['date'] < b['date']) return 1;
+            else if (a['date'] > b['date']) return -1;
+            else return 0;
+        });
+    }
+    else if (typeOfSort == 'byTimeDesc') {
+        // сначала новые
+        posts.sort(function (a, b) {
+            if (a['date'] > b['date']) return 1;
+            else if (a['date'] < b['date']) return -1;
+            else return 0;
+        });
     }
     console.log('На вывод: ', posts);
 
@@ -225,32 +265,13 @@ function make_post(post) {
     // конец записи
     code += htmlTemplate.postEnd.format(post['likes']['count'],
                                         post['reposts']['count'],
+                                        post['comments']['count'],
                                         post['speed'],
                                         date,
                                         post['from_id'],
                                         post['id']);
 }
 
-
-function sort_RevByLikes(a, b) {
-    if (a['likes']['count'] < b['likes']['count']) return 1;
-    else if (a['likes']['count'] > b['likes']['count']) return -1;
-    else return 0;
-}
-
-
-function sort_RevByReposts(a, b) {
-    if (a['reposts']['count'] < b['reposts']['count']) return 1;
-    else if (a['reposts']['count'] > b['reposts']['count']) return -1;
-    else return 0;
-}
-
-
-function sort_RevBySpeed(a, b) {
-    if (a['speed'] < b['speed']) return 1;
-    else if (a['speed'] > b['speed']) return -1;
-    else return 0;
-}
 
 
 // ПОЛУЧЕНИЕ СПИСКА ЗАПИСЕЙ
