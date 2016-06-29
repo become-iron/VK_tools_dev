@@ -10,10 +10,9 @@
     background-color: #fff;
     padding: 3px 4px;
 }
-/*.action:hover, .action:active, .action:focus {*/
-    /*color: #2F5879;*/
-    /*background-color: #E9EDF1;*/
-/*}*/
+.post-link:hover, .post-link:active, .post-link:focus {
+    background-color: #E9EDF1;
+}
 .marked {
     color: #2F5879;
 }

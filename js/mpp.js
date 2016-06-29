@@ -36,7 +36,7 @@ var htmlTemplate = {
                         '</p>' +
                         '<p class="list-group-item">' +
                             '<span title="Дата создания записи" class="action">{3}</span>' +
-                            '<a title="Открыть запись в новом окне" class="btn action" href="https://vk.com/wall{4}_{5}" target="_blank" role="button">' +
+                            '<a title="Открыть запись в новом окне" class="btn action post-link" href="https://vk.com/wall{4}_{5}" target="_blank" role="button">' +
                                 'Перейти к записи' +
                             '</a>' +
                         '</p>' +
