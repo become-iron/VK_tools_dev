@@ -110,7 +110,7 @@ function display_posts() {
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
     $(btnAddPosts).prop("disabled", false);
-    $(btnAddPosts).css("display", 'inline-block');
+    // $(btnAddPosts).css("display", 'inline-block');
     resize_frame();
 }
 
@@ -313,8 +313,6 @@ $(btnExec).click(function() {
         var params = (id.length > 0)
                      ? {owner_id: id, count: count, filter: filter, offset: offset}
                      : {domain: domain, count: count, filter: filter, offset: offset};
-        // posts = api_query('wall.get', params);
-        // display_posts();
         VK.api(
             'wall.get',
             params,
