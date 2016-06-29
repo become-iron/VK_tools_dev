@@ -313,17 +313,17 @@ $(btnExec).click(function() {
         var params = (id.length > 0)
                      ? {owner_id: id, count: count, filter: filter, offset: offset}
                      : {domain: domain, count: count, filter: filter, offset: offset};
-        posts = api_query('wall.get', params);
-        display_posts();
-        // VK.api(
-        //     'wall.get',
-        //     params,
-        //     function(data) {
-        //         if (is_error(data)) {return}
-        //         posts = data['response']['items'];
-        //         display_posts();
-        //     }
-        // );
+        // posts = api_query('wall.get', params);
+        // display_posts();
+        VK.api(
+            'wall.get',
+            params,
+            function(data) {
+                if (is_error(data)) {return}
+                posts = data['response']['items'];
+                display_posts();
+            }
+        );
     }
 });
 
