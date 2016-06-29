@@ -111,24 +111,24 @@ function diff(A, B) {
 }
 
 
-function api_query(query, params, func) {
-    /* Обёртка для выполнения запроса к API VK
-    Принимает:
-        query (String)
-        params (Object)
-        func (function)
-    */
-    if (func == undefined) {
-        func = function(data) {
-                   if (is_error(data)) {return}
-                   val = data['response']['items']
-               }
-    }
-    var val;
-    VK.api(
-        query,
-        params,
-        func
-    );
-    return val;
-}
+// function api_query(query, params, func) {
+//     /* Обёртка для выполнения запроса к API VK
+//     Принимает:
+//         query (String)
+//         params (Object)
+//         func (function)
+//     */
+//     if (func == undefined) {
+//         func = function(data) {
+//                    if (is_error(data)) {return}
+//                    val = data['response']['items']
+//                }
+//     }
+//     var val;
+//     VK.api(
+//         query,
+//         params,
+//         func
+//     );
+//     return val;
+// }
