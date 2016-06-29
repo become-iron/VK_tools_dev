@@ -62,24 +62,24 @@ function upd_group_list() {
         function (data) {
             if (!is_error(data)) {
                 groups = data['response']['items'];
-                console.log(groups);
+                // добавляем группы в выпадающий список
+                var options = '';
+                $(selGroups).empty();  // очищаем список
+                for (var i = 0; i < groups.length; i++) {
+                    var group = groups[i];
+                    options += '<option value="-{0}">{1}</option>'.format(group['id'], group['name']);
+                }
+                $(selGroups).append(options);
+                $(btnExec).prop("disabled", false);
             }
         }
     );
-    console.log(groups);
-    if (groups === undefined) {
-        $(btnExec).prop("disabled", false);
-        return;
-    }
-    // добавляем группы в выпадающий список
-    var options = '';
-    $(selGroups).empty();  // очищаем список
-    for (var i = 0; i < groups.length; i++) {
-        var group = groups[i];
-        options += '<option value="-{0}">{1}</option>'.format(group['id'], group['name']);
-    }
-    $(selGroups).append(options);
-    $(btnExec).prop("disabled", false);
+    // console.log(groups);
+    // if (groups === undefined) {
+    //     $(btnExec).prop("disabled", false);
+    //     return;
+    // }
+
 }
 
 
