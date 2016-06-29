@@ -65,7 +65,7 @@ function upd_group_list() {
             }
         }
     );
-    if (group === undefined) {
+    if (groups === undefined) {
         $(btnExec).prop("disabled", false);
         return;
     }
