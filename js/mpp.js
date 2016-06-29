@@ -81,7 +81,6 @@ function upd_group_list() {
 
 
 function display_posts() {
-    console.time('вывод постов');
     // ВЫВОД ПОСТОВ
     countOut = Number($(inpCountOut).val());
     typeOfSort = $(selSort).val();  // вид сортировки
@@ -102,52 +101,65 @@ function display_posts() {
             posts[i]['speed'] = Number((posts[i]['likes']['count'] / (currentTime - posts[i]['date']) * 86400).toFixed(2));
         }
         // сортировка записей
-        // TODO оптимизировать
-        if (typeOfSort == 'byLikes') {
-            posts.sort(function (a, b) {
-                if (a['likes']['count'] < b['likes']['count']) return 1;
-                else if (a['likes']['count'] > b['likes']['count']) return -1;
-                else return 0;
-            });
-        }
-        else if (typeOfSort == 'byReposts') {
-            posts.sort(function (a, b) {
-                if (a['reposts']['count'] < b['reposts']['count']) return 1;
-                else if (a['reposts']['count'] > b['reposts']['count']) return -1;
-                else return 0;
-            });
-        }
-        else if (typeOfSort == 'byComments') {
-            // сначала новые
-            posts.sort(function (a, b) {
-                if (a['comments']['count'] < b['comments']['count']) return 1;
-                else if (a['comments']['count'] > b['comments']['count']) return -1;
-                else return 0;
-            });
-        }
-        else if (typeOfSort == 'bySpeed') {
-            posts.sort(function (a, b) {
-                if (a['speed'] < b['speed']) return 1;
-                else if (a['speed'] > b['speed']) return -1;
-                else return 0;
-            });
-        }
-        else if (typeOfSort == 'byTimeDesc') {
-            posts.sort(function (a, b) {
-                // сначала новые
-                if (a['date'] < b['date']) return 1;
-                else if (a['date'] > b['date']) return -1;
-                else return 0;
-            });
-        }
-        else if (typeOfSort == 'byTimeAsc') {
-            // сначала старые
-            posts.sort(function (a, b) {
-                if (a['date'] > b['date']) return 1;
-                else if (a['date'] < b['date']) return -1;
-                else return 0;
-            });
-        }
+        // TODO WARN оптимизировать
+        sorts = {byLikes: 'likes.count',
+                 byReposts: 'reposts.count',
+                 byComments: 'comments.count',
+                 bySpeed: 'speed',
+                 byTimeDesc: 'date'
+                 // byTimeAsc: 'date'
+        };
+        eval('posts.sort(function (a, b) {' +
+                 'if (a.{0} < b.{0}) return 1;' +
+                 'else if (a.{0} > b.{0}) return -1;' +
+                 'else return 0;' +
+             '});'.format(sorts[typeOfSort])
+        );
+        // if (typeOfSort == 'byLikes') {
+        //     posts.sort(function (a, b) {
+        //         if (a['likes']['count'] < b['likes']['count']) return 1;
+        //         else if (a['likes']['count'] > b['likes']['count']) return -1;
+        //         else return 0;
+        //     });
+        // }
+        // else if (typeOfSort == 'byReposts') {
+        //     posts.sort(function (a, b) {
+        //         if (a['reposts']['count'] < b['reposts']['count']) return 1;
+        //         else if (a['reposts']['count'] > b['reposts']['count']) return -1;
+        //         else return 0;
+        //     });
+        // }
+        // else if (typeOfSort == 'byComments') {
+        //     // сначала новые
+        //     posts.sort(function (a, b) {
+        //         if (a['comments']['count'] < b['comments']['count']) return 1;
+        //         else if (a['comments']['count'] > b['comments']['count']) return -1;
+        //         else return 0;
+        //     });
+        // }
+        // else if (typeOfSort == 'bySpeed') {
+        //     posts.sort(function (a, b) {
+        //         if (a['speed'] < b['speed']) return 1;
+        //         else if (a['speed'] > b['speed']) return -1;
+        //         else return 0;
+        //     });
+        // }
+        // else if (typeOfSort == 'byTimeDesc') {
+        //     posts.sort(function (a, b) {
+        //         // сначала новые
+        //         if (a['date'] < b['date']) return 1;
+        //         else if (a['date'] > b['date']) return -1;
+        //         else return 0;
+        //     });
+        // }
+        // else if (typeOfSort == 'byTimeAsc') {
+        //     // сначала старые
+        //     posts.sort(function (a, b) {
+        //         if (a['date'] > b['date']) return 1;
+        //         else if (a['date'] < b['date']) return -1;
+        //         else return 0;
+        //     });
+        // }
         console.log('На вывод: ', posts);
 
         code = '';
@@ -168,12 +180,10 @@ function display_posts() {
     $(btnExec).val('Произвести выборку');
     $(btnExec).prop("disabled", false);
     resize_frame();
-    console.timeEnd('вывод постов');
 }
 
 
 function make_post(post) {
-    console.time('создание поста');
     /* ГЕНЕРАЦИЯ HTML-КОДА ДЛЯ ПОСТА
     Добавляет HTML-код для вывода постов в глобальную переменную code
     Принимает:
@@ -274,7 +284,6 @@ function make_post(post) {
                                         date,
                                         post['from_id'],
                                         post['id']);
-    console.timeEnd('создание поста');
 }
 
 
@@ -382,6 +391,6 @@ $(btnAddPosts).click( function () {
 
 
 // очищение поля для ссылки при выборе группы из выпад. списка
-$(selGroups).change(function() {
+$(selGroups).change( function() {
     $(inpOwner).val('');
 });
