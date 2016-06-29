@@ -16,7 +16,6 @@ function on_success() {
     // получаем список групп юзера
     // TEMP
     if (tabCode == 'mpp') {
-        console.log('MPP. upd group list');
         upd_group_list();
     }
     else if (tabCode == 'changes') {

@@ -30,6 +30,6 @@
     display: none;
 }
 
-select.input-sm {
-    height: 34px; !important;
+.input-sm,.form-control, .btn {
+    height: 30px;
 }
