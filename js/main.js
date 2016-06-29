@@ -37,22 +37,23 @@ function on_fail() {
 function is_error(data) {
     // TODO добавить возможность прикрепления сообщения
     // ПРОВЕРКА НА ОШИБКУ
-    if (data['error']) {
-        var txtError = data['error']['error_code'] + ' ' + data['error']['error_msg'];
-        alert('Произошла ошибка: ' + txtError);
-        console.error('MPP. Ошибка:', txtError, data);
-        
-        // разблокировка кнопки выборки
-        $(btnExec).val('Произвести выборку');
-        $(btnExec).prop("disabled", false);
-        return true;
-    }
-    else if (data == undefined) {
+    if (data === undefined) {
         alert('Ошибка получения записей');
         console.error('MPP. Ошибка получения записей');
         // разблокировка кнопки выборки
         $(btnExec).val('Произвести выборку');
         $(btnExec).prop("disabled", false);
+        return true;
+    }
+    else if (data['error'] !== undefined) {
+        var txtError = data['error']['error_code'] + ' ' + data['error']['error_msg'];
+        alert('Произошла ошибка: ' + txtError);
+        console.error('MPP. Ошибка:', txtError, data);
+
+        // разблокировка кнопки выборки
+        $(btnExec).val('Произвести выборку');
+        $(btnExec).prop("disabled", false);
+        return true;
     }
     else {return false;}
 }
