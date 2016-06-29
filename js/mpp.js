@@ -62,6 +62,7 @@ function upd_group_list() {
         function (data) {
             if (!is_error(data)) {
                 groups = data['response']['items'];
+                console.log(groups);
             }
         }
     );
