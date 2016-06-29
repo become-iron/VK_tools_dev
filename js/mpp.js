@@ -111,10 +111,10 @@ function display_posts() {
         };
         console.log(sorts[typeOfSort], typeof sorts[typeOfSort]);
         eval('posts.sort(function (a, b) {' +
-                 'if (a.{0} < b.{0}) return 1;' +
-                 'else if (a.{0} > b.{0}) return -1;' +
+                 'if (a.' + sorts[typeOfSort] + ' < b.' + sorts[typeOfSort] + ') return 1;' +
+                 'else if (a.' + sorts[typeOfSort] + ' > b.' + sorts[typeOfSort] + ') return -1;' +
                  'else return 0;' +
-             '});'.format(sorts[typeOfSort])
+             '});'
         );
         // if (typeOfSort == 'byLikes') {
         //     posts.sort(function (a, b) {
