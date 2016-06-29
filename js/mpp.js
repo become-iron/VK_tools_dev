@@ -65,6 +65,7 @@ function upd_group_list() {
             }
         }
     );
+    console.log(groups);
     if (groups === undefined) {
         $(btnExec).prop("disabled", false);
         return;
