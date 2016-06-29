@@ -45,8 +45,8 @@ var htmlTemplate = {
                         '</p>' +
                         '</div></div>',
     blockPhotoStart:    '<div class="list-group-item"><div class="row">',
-    blockPhoto:         '<div class="col-xs-2">' +
-                            '<a href="{0}" target="_blank"><img class="img-responsive" src="{1}" width="auto" height="70"></a>' +
+    blockPhoto:         '<div class="col-xs-2 photo-block">' +
+                            '<a href="{0}" target="_blank"><img src="{1}" width="auto" height="70"></a>' +
                         '</div>',
     blockPhotoEnd:      '</div></div>',
     blockAudioStart:    '<div class="list-group-item">',
