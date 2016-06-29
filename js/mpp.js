@@ -93,7 +93,11 @@ function display_posts() {
     isContent = $(chbIsContent).prop("checked");  // необходимость показа прикреплений
 
     console.log('Записи: ', posts);
-    if (is_error(posts)) return;
+    if (is_error(posts)) {
+        $(btnExec).prop("disabled", false);
+        $(btnExec).val('Произвести выборку');
+        return;
+    }
     $(divPosts).empty();
     if (posts.length == 0) {
         alert('Записей не найдено');
@@ -138,14 +142,14 @@ function display_posts() {
     }
     else if (typeOfSort == 'byTimeDesc') {
         posts.sort(function (a, b) {
-            // сначала старые
+            // сначала новые
             if (a['date'] < b['date']) return 1;
             else if (a['date'] > b['date']) return -1;
             else return 0;
         });
     }
     else if (typeOfSort == 'byTimeAsc') {
-        // сначала новые
+        // сначала старые
         posts.sort(function (a, b) {
             if (a['date'] > b['date']) return 1;
             else if (a['date'] < b['date']) return -1;
