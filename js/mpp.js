@@ -235,6 +235,7 @@ function make_post(post) {
             }
             code += htmlTemplate.blockPhotoEnd;
         }
+        // TODO все записи могут быть заблокированы/удалены
         if (listAudio.length > 0) {
             // console.log('Аудио: ', listAudio);
             code += htmlTemplate.blockAudioStart;
