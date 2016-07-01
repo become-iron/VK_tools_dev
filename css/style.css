@@ -22,10 +22,10 @@
 
 /*для изображений в постах*/
 .photo-block img{
-    display: block;
-    height: 60px;
-    width: auto;
     overflow: hidden;
+    /*display: block;*/
+    height: 60px;
+    /*width: auto;*/
 }
 
 /*.photo-block .col-xs-2{*/
