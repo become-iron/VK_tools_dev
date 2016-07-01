@@ -22,15 +22,12 @@
 
 /*для изображений в постах*/
 .photo-block img{
-    overflow: hidden;
-    /*display: block;*/
     height: 60px;
-    /*width: auto;*/
 }
 
-/*.photo-block .col-xs-2{*/
-    /*height: 60px;*/
-/*}*/
+.photo-block .col-xs-2{
+    overflow: hidden;
+}
 
 #btnAddPosts {
     margin-top: -5px;
