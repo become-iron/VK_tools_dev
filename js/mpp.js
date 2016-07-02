@@ -107,7 +107,7 @@ function display_posts() {
         }
         if ($(chbOnDateOut).prop("checked")) {
             posts = posts.filter(function (post) {
-                return post['date'] > (Date.parse($(inpDateOut).val()) / 1000);
+                return post['date'] < (Date.parse($(inpDateOut).val()) / 1000);
             });
         }
 
@@ -233,23 +233,6 @@ function make_post(post) {
             }
             code += htmlTemplate.blockAudioEnd;
         }
-
-        //if (listVideo.length > 0) {
-        //    console.log('Видео: ', listVideo);
-        //    // начало блока
-        //    code += '<div class="list-group-item">';
-        //    for (var k = 0; k < listPhoto.length; k++) {
-        //        var video = listVideo[k];
-        //        code += '<div class="embed-responsive embed-responsive-16by9">' +
-        //            '<iframe src="//vk.com/video_ext.php?oid=' + video.video.owner_id + '&id=' + video.video.id + '&hash=' + video.video.access_key + '"></iframe>' +
-        //            '</div>';
-        //        console.log('<div class="embed-responsive embed-responsive-16by9">' +
-        //            '<iframe src="//vk.com/video_ext.php?oid=' + video.video.owner_id + '&id=' + video.video.id + '&hash=' + video.video.access_key + '"></iframe>' +
-        //            '</div>');
-        //    }
-        //    // конец блока
-        //    code += '</div>';
-        //}
     }
     // конец записи
     code += htmlTemplate.postEnd.format(post['likes']['count'],
