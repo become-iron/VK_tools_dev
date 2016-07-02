@@ -2,7 +2,6 @@ var apiVersion = '5.52';  // используемая версия API VK
 var widthFrame = 630;  // ширина фрейма
 var storage = false;  // доступность localstorage
 
-
 // ИНИЦИАЛИЗАЦИЯ API
 $(document).ready(function () {
     // TEMP
@@ -15,10 +14,10 @@ function on_success() {
     resize_frame();
     // получаем список групп юзера
     // TEMP
-    if (tabCode == 'mpp') {
+    if (tabCode === 'mpp') {
         upd_group_list();
     }
-    else if (tabCode == 'changes') {
+    else if (tabCode === 'changes') {
         analyseChanges();
     }
 }
@@ -99,32 +98,32 @@ function diff(A, B) {
     for (var i = 0; i < M; i++)
     {
         var j = 0, k = 0;
-        while (B[j] !== A[ i ] && j < N) j++;
-        while (C[k] !== A[ i ] && k < c) k++;
-        if (j == N && k == c) C[c++] = A[ i ];
+        while (B[j] !== A[ i ] && j < N) {j++;}
+        while (C[k] !== A[ i ] && k < c) {k++;}
+        if (j === N && k === c) {C[c++] = A[ i ];}
     }
     return C;
 }
 
 
-function api_query(query, params, func) {
-    /* Обёртка для выполнения запроса к API VK
-    Принимает:
-        query (String)
-        params (Object)
-        func (function)
-    */
-    if (func == undefined) {
-        func = function(data) {
-                   if (is_error(data)) {return}
-                   val = data['response']['items']
-               }
-    }
-    var val;
-    VK.api(
-        query,
-        params,
-        func
-    );
-    return val;
-}
+// function api_query(query, params, func) {
+//     /* Обёртка для выполнения запроса к API VK
+//     Принимает:
+//         query (String)
+//         params (Object)
+//         func (function)
+//     */
+//     if (func === undefined) {
+//         func = function(data) {
+//                    if (is_error(data)) {return;}
+//                    val = data['response']['items']
+//                }
+//     }
+//     var val;
+//     VK.api(
+//         query,
+//         params,
+//         func
+//     );
+//     return val;
+// }

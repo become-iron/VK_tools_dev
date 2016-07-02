@@ -21,12 +21,11 @@
 }
 
 /*для изображений в постах*/
-.photo-block img{
-    height: 60px;
-}
-
 .photo-block .col-xs-2{
     overflow: hidden;
+}
+.photo-block img{
+    height: 60px;
 }
 
 #btnAddPosts {
