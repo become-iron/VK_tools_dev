@@ -102,11 +102,13 @@ function display_posts() {
         //  выборка постов по дате
         if ($(chbOnDateIn).prop("checked")) {
             posts = posts.filter(function (post) {
+                console.log(post['date'], Date.parse($(inpDateIn).val()) / 1000);
                 return post['date'] > (Date.parse($(inpDateIn).val()) / 1000);
             });
         }
         if ($(chbOnDateOut).prop("checked")) {
             posts = posts.filter(function (post) {
+                console.log(post['date'], Date.parse($(inpDateOut).val()) / 1000);
                 return post['date'] < (Date.parse($(inpDateOut).val()) / 1000);
             });
         }
