@@ -100,18 +100,14 @@ function display_posts() {
             // скорость = количество лайков / (текущая дата - дата публикации записи) [1/день]
             posts[i]['speed'] = Number((posts[i]['likes']['count'] / (currentTime - posts[i]['date']) * 86400).toFixed(2));
         }
+        
         // сортировка записей
-        // TODO оптимизировать
-
-        console.time('sort');
         var sorts = {byLikes: ['likes', 'count'],
                      byReposts: ['reposts', 'count'],
                      byComments: ['comments', 'count'],
                      bySpeed: ['speed'],
                      byTimeDesc: ['date'],
-                     byTimeAsc: ['date']
-        };
-
+                     byTimeAsc: ['date']};
         posts.sort(function (a, b) {
             a = sorts[typeOfSort].length === 1 ? a[sorts[typeOfSort][0]] : a[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
             b = sorts[typeOfSort].length === 1 ? b[sorts[typeOfSort][0]] : b[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
@@ -121,7 +117,6 @@ function display_posts() {
         });
         if (typeOfSort === 'byTimeAsc') {posts = posts.reverse();}
 
-        console.timeEnd('sort');
         console.log('На вывод: ', posts);
 
         code = '';
