@@ -12,6 +12,11 @@ var inpOffset = '#offset';  // смещение записей
 var selSort = '#sort';
 var chbIsContent = '#isContent';
 var btnAddPosts = '#btnAddPosts';
+var inpDateIn = "#dateIn";
+var inpDateOut = "#dateOut";
+var chbOnDateIn = '#onDateIn';
+var chbOnDateOut = '#onDateOut';
+
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
 
@@ -94,13 +99,25 @@ function display_posts() {
         alert('Записей не найдено');
     }
     else if (!is_error(posts)) {
+        //  выборка постов по дате
+        if ($(chbOnDateIn).prop("checked")) {
+            posts = posts.filter(function (post) {
+                return post['date'] > (Date.parse($(inpDateIn).val()) / 1000);
+            });
+        }
+        if ($(chbOnDateOut).prop("checked")) {
+            posts = posts.filter(function (post) {
+                return post['date'] > (Date.parse($(inpDateOut).val()) / 1000);
+            });
+        }
+
         // расчёт скорости набора лайков
         var currentTime = new Date().getTime() / 1000;
         for (var i = 0; i < posts.length; i++) {
             // скорость = количество лайков / (текущая дата - дата публикации записи) [1/день]
             posts[i]['speed'] = Number((posts[i]['likes']['count'] / (currentTime - posts[i]['date']) * 86400).toFixed(2));
         }
-        
+
         // сортировка записей
         var sorts = {byLikes: ['likes', 'count'],
                      byReposts: ['reposts', 'count'],
@@ -352,3 +369,33 @@ $(btnAddPosts).click( function () {
 $(selGroups).change( function() {
     $(inpOwner).val('');
 });
+
+
+// КАЛЕНДАРИ
+$(chbOnDateIn).change(function () {
+    $(inpDateIn).prop("disabled", !$(chbOnDateIn).prop("checked"));
+});
+
+$(chbOnDateOut).change(function () {
+    $(inpDateOut).prop("disabled", !$(chbOnDateOut).prop("checked"));
+});
+
+var fields = [inpDateIn, inpDateOut];
+for (var i = 0; i < 2; i++) {
+    $(fields[i]).daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": true,
+        // "linkedCalendars": true,
+        "startDate": i===1 ? moment() : moment().subtract(30, 'days'),
+
+        // "endDate": "07/02/2016",
+        "opens": "left",
+        "applyClass": "btn-primary",
+        locale: {
+            format: 'DD/MM/YYYY H:mm'
+        }
+    });
+}
+

@@ -33,3 +33,7 @@
     margin-bottom: 10px;
     display: none;
 }
+
+.daterangepicker .ranges {
+    display: none;
+}
