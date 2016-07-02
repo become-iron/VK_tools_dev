@@ -171,7 +171,7 @@ function make_post(post) {
         return (val.length == 1) ? '0' + val : val;
     }
 
-    if ($(chbExclPinPost).val() && post['is_pinned'] === 1) {return;}  // исключение прикрепленного поста
+    if ($(chbExclPinPost).prop("checked") && post['is_pinned'] === 1) {return;}  // исключение закреплённой записи
 
     // составление даты записи
     var date = new Date(post['date'] * 1000);
