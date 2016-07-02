@@ -103,6 +103,7 @@ function display_posts() {
         // сортировка записей
         // TODO оптимизировать
 
+        console.time('sort');
         var sorts = {byLikes: ['likes', 'count'],
                      byReposts: ['reposts', 'count'],
                      byComments: ['comments', 'count'],
@@ -111,7 +112,6 @@ function display_posts() {
                      byTimeAsc: ['date']
         };
 
-        console.time('sort');
         posts.sort(function (a, b) {
             a = sorts[typeOfSort].length === 1 ? a[sorts[typeOfSort][0]] : a[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
             b = sorts[typeOfSort].length === 1 ? b[sorts[typeOfSort][0]] : b[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
