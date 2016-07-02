@@ -371,10 +371,7 @@ for (var i = 0; i < 2; i++) {
         "timePicker": true,
         "timePicker24Hour": true,
         "autoApply": true,
-        // "linkedCalendars": true,
-        "startDate": i===1 ? moment() : moment().subtract(30, 'days'),
-
-        // "endDate": "07/02/2016",
+        "startDate": i===1 ? moment().add(1, 'hour') : moment().subtract(30, 'days'),
         "opens": "left",
         "drops": "up",
         "applyClass": "btn-primary",
