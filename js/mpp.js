@@ -376,6 +376,7 @@ for (var i = 0; i < 2; i++) {
 
         // "endDate": "07/02/2016",
         "opens": "left",
+        "drops": "up",
         "applyClass": "btn-primary",
         locale: {
             format: 'DD/MM/YYYY H:mm'
