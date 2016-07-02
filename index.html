@@ -32,28 +32,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="dateIn" class="col-xs-offset-1 col-xs-5 control-label">Записи не ранее</label>
-            <div class="col-xs-5">
-                <div class="input-group">
-                    <input type="text" id="dateIn" class="form-control input-sm" disabled>
-                    <span class="input-group-addon">
-                        <input type="checkbox" id="onDateIn">
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="dateOut" class="col-xs-offset-1 col-xs-5 control-label">Записи не позже</label>
-            <div class="col-xs-5">
-                <div class="input-group">
-                    <input type="text" id="dateOut" class="form-control input-sm" disabled>
-                    <span class="input-group-addon">
-                        <input type="checkbox" id="onDateOut">
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
             <label for="count" class="col-xs-offset-1 col-xs-5 control-label">Количество записей для поиска (до 2500)</label>
             <div class="col-xs-5">
                 <input type="number" id="count" value="100" min="1" max="2500" step="1" class="form-control input-sm">
@@ -69,6 +47,28 @@
             <label for="countOut" class="col-xs-offset-1 col-xs-5 control-label">Смещение, необходимое для выборки записей</label>
             <div class="col-xs-5">
                 <input type="number" id="offset" value="0" min="0" max="2499" step="1" class="form-control input-sm">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dateIn" class="col-xs-offset-1 col-xs-5 control-label">Записи опубликованные позже</label>
+            <div class="col-xs-5">
+                <div class="input-group">
+                    <input type="text" id="dateIn" class="form-control input-sm" disabled>
+                    <span class="input-group-addon">
+                        <input type="checkbox" id="onDateIn">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dateOut" class="col-xs-offset-1 col-xs-5 control-label">Записи опубликованные ранее</label>
+            <div class="col-xs-5">
+                <div class="input-group">
+                    <input type="text" id="dateOut" class="form-control input-sm" disabled>
+                    <span class="input-group-addon">
+                        <input type="checkbox" id="onDateOut">
+                    </span>
+                </div>
             </div>
         </div>
         <div class="form-group">
