@@ -100,16 +100,17 @@ function display_posts() {
     }
     else if (!is_error(posts)) {
         //  выборка постов по дате
+        // TODO
         if ($(chbOnDateIn).prop("checked")) {
             posts = posts.filter(function (post) {
-                console.log(post['date'], Date.parse($(inpDateIn).val()) / 1000);
-                return post['date'] > (Date.parse($(inpDateIn).val()) / 1000);
+                console.log(post['date'], moment($(inpDateIn).val(), 'DD/MM/YYYY H:mm').format('X'));
+                return post['date'] > (moment($(inpDateIn).val(), 'DD/MM/YYYY H:mm').format('X'));
             });
         }
         if ($(chbOnDateOut).prop("checked")) {
             posts = posts.filter(function (post) {
-                console.log(post['date'], Date.parse($(inpDateOut).val()) / 1000);
-                return post['date'] < (Date.parse($(inpDateOut).val()) / 1000);
+                console.log(post['date'], moment($(inpDateOut).val(), 'DD/MM/YYYY H:mm').format('X'));
+                return post['date'] < (moment($(inpDateOut).val(), 'DD/MM/YYYY H:mm').format('X'));
             });
         }
 
@@ -384,3 +385,4 @@ for (var i = 0; i < 2; i++) {
     });
 }
 
+console.log(moment($(inpDateIn).val(), 'DD/MM/YYYY H:mm').format('X'));
