@@ -16,6 +16,7 @@ var inpDateIn = "#dateIn";
 var inpDateOut = "#dateOut";
 var chbOnDateIn = '#onDateIn';
 var chbOnDateOut = '#onDateOut';
+var chbExclPinPost = '#exclPinPost';
 
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
@@ -170,6 +171,8 @@ function make_post(post) {
         return (val.length == 1) ? '0' + val : val;
     }
 
+    if ($(chbExclPinPost) && post['is_pinned'] == 1) { return;}  // исключение прикрепленного поста
+
     // составление даты записи
     var date = new Date(post['date'] * 1000);
     date = zfill(date.getDate()) + '.' + zfill(Number(date.getMonth()) + 1) + '.' + date.getFullYear()  + ' ' + zfill(date.getHours()) + ':' + zfill(date.getMinutes());
@@ -201,9 +204,6 @@ function make_post(post) {
         var listAudio = post['attachments'].filter( function(attach) {
                 return attach.type == 'audio'
             } );
-        //var listVideo = post['attachments'].filter(function(attach) {
-        //return attach.type == 'video'
-        //});
 
         if (listPhoto.length > 0) {
             // console.log('Изображения: ', listPhoto);
@@ -334,6 +334,7 @@ $(btnExec).click( function() {
 });
 
 
+// кнопка загрузки дополнительных записей
 $(btnAddPosts).click( function () {
     code = '';
     for (var n = 0; n < 10; n++) {
