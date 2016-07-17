@@ -337,12 +337,10 @@ $(btnExec).click( function() {
 
 
 // кнопка загрузки дополнительных записей
-
 VK.callMethod("scrollSubscribe", false);
-
 VK.addCallback('onScroll', function (scrollTop, windowHeight){
-    console.log(scrollTop, windowHeight, $("html").height());
-    if ($("html").height() - scrollTop - 429 <= 0) {
+    // console.log(scrollTop, windowHeight, $("html").height());
+    if ((posts !== undefined) && ($("html").height() - scrollTop - 429 <= 0)) {
         code = '';
         for (var n = 0; n < 10; n++) {
             countOut += 1;
@@ -357,19 +355,19 @@ VK.addCallback('onScroll', function (scrollTop, windowHeight){
     }
 });
 
-$(btnAddPosts).click( function () {
-    code = '';
-    for (var n = 0; n < 10; n++) {
-        countOut += 1;
-        if (posts.length <= countOut) {
-            $(btnAddPosts).css("display", 'none');
-            break;
-        }
-        make_post(posts[countOut]);
-    }
-    $(divPosts).append(code);
-    resize_frame();
-});
+// $(btnAddPosts).click( function () {
+//     code = '';
+//     for (var n = 0; n < 10; n++) {
+//         countOut += 1;
+//         if (posts.length <= countOut) {
+//             $(btnAddPosts).css("display", 'none');
+//             break;
+//         }
+//         make_post(posts[countOut]);
+//     }
+//     $(divPosts).append(code);
+//     resize_frame();
+// });
 
 
 // очищение поля для ссылки при выборе группы из выпад. списка
