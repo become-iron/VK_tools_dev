@@ -121,20 +121,22 @@ function display_posts() {
         }
 
         // сортировка записей
+	// TODO
         var sorts = {byLikes: ['likes', 'count'],
                      byReposts: ['reposts', 'count'],
                      byComments: ['comments', 'count'],
-                     bySpeed: ['speed'],
-                     byTimeDesc: ['date'],
-                     byTimeAsc: ['date']};
-        posts.sort(function (a, b) {
-            a = sorts[typeOfSort].length === 1 ? a[sorts[typeOfSort][0]] : a[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
-            b = sorts[typeOfSort].length === 1 ? b[sorts[typeOfSort][0]] : b[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
-            if (a < b) {return 1}
-            else if (a > b) {return -1}
-            else {return 0}
-        });
+                     bySpeed: ['speed']};
+	
         if (typeOfSort === 'byTimeAsc') {posts = posts.reverse();}
+	else if (typeOfSort !== 'byTimeDesc') {
+        	posts.sort(function (a, b) {
+            	a = sorts[typeOfSort].length === 1 ? a[sorts[typeOfSort][0]] : a[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
+            	b = sorts[typeOfSort].length === 1 ? b[sorts[typeOfSort][0]] : b[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
+            	if (a < b) {return 1}
+            	else if (a > b) {return -1}
+            	else {return 0}
+        	});
+	}
 
         console.log('На вывод: ', posts);
 
@@ -335,6 +337,13 @@ $(btnExec).click( function() {
 
 
 // кнопка загрузки дополнительных записей
+
+VK.callMethod("scrollSubscribe", false);
+
+VK.onScroll( function (scrollTop, windowHeight) {
+    console.log(scrollTop, windowHeight);
+});
+
 $(btnAddPosts).click( function () {
     code = '';
     for (var n = 0; n < 10; n++) {
