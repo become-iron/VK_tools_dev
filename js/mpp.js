@@ -340,7 +340,7 @@ $(btnExec).click( function() {
 
 VK.callMethod("scrollSubscribe", false);
 
-VK.onScroll( function (scrollTop, windowHeight) {
+VK.addCallback('onScroll', function (scrollTop, windowHeight){
     console.log(scrollTop, windowHeight);
 });
 
