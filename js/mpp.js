@@ -341,7 +341,7 @@ $(btnExec).click( function() {
 VK.callMethod("scrollSubscribe", false);
 
 VK.addCallback('onScroll', function (scrollTop, windowHeight){
-    console.log(scrollTop, windowHeight);
+    console.log(scrollTop, windowHeight, $("html").height());
 });
 
 $(btnAddPosts).click( function () {
