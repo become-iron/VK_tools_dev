@@ -10,91 +10,93 @@
   </head>
   <body>
     <div class="container">
-      <form class="form-horizontal">
-        <div class="form-group">
-          <div class="input-group" title="Ссылка на группу или страницу">
-            <input class="form-control" id="groupID" type="text" placeholder="ID/ссылка пользователя/сообщества"><span class="input-group-btn" title="Сбросить поле">
-              <button class="btn btn-default" type="button" onclick="$(inpOwner).val('')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></span>
+      <div class="col-xs-offset-1 col-xs-10">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <div class="input-group" title="Ссылка на группу или страницу">
+              <input class="form-control" id="groupID" type="text" placeholder="ID/ссылка пользователя/сообщества"><span class="input-group-btn" title="Сбросить поле">
+                <button class="btn btn-default" type="button" onclick="$(inpOwner).val('')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></span>
+            </div>
+            <div class="input-group" style="margin-top: 7px" title="Список групп">
+              <select class="form-control input-sm" id="groups"></select><span class="input-group-btn" title="Обновить список групп">
+                <button class="btn btn-default" type="button" onclick="upd_group_list()"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></span>
+            </div>
+            <p class="help-block">
+              Выберите сообщество из списка или вставьте в поле ID/адрес профиля/сообщества. ID сообщества должен начинаться с "-"
+              Например: 123456, -654321, http://vk.com/vku, apiclub
+            </p>
           </div>
-          <div class="input-group" style="margin-top: 7px" title="Список групп">
-            <select class="form-control input-sm" id="groups"></select><span class="input-group-btn" title="Обновить список групп">
-              <button class="btn btn-default" type="button" onclick="upd_group_list()"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></span>
-          </div>
-          <p class="help-block">
-            Выберите сообщество из списка или вставьте в поле ID/адрес профиля/сообщества. ID сообщества должен начинаться с "-"
-            Например: 123456, -654321, http://vk.com/vku, apiclub
-          </p>
-        </div>
-        <div class="form-group">
-          <label class="col-xs-6 control-label" for="count">Количество записей для поиска (до 2500)</label>
-          <div class="col-xs-6">
-            <input class="form-control input-sm" id="count" type="number" value="100" min="1" max="2500" step="1">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-xs-6 control-label" for="countOut">Количество записей для вывода</label>
-          <div class="col-xs-6">
-            <input class="form-control input-sm" id="countOut" type="number" value="10" min="1" max="2500" step="1">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-xs-6 control-label" for="countOut">Смещение, необходимое для выборки записей</label>
-          <div class="col-xs-6">
-            <input class="form-control input-sm" id="offset" type="number" value="0" min="0" max="2499" step="1">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-xs-6 control-label" for="dateIn">Записи опубликованные позже</label>
-          <div class="col-xs-6">
-            <div class="input-group">
-              <input class="form-control input-sm" id="dateIn" type="text" disabled><span class="input-group-addon">
-                <input id="onDateIn" type="checkbox"></span>
+          <div class="form-group">
+            <label class="col-xs-6 control-label" for="count">Количество записей для поиска (до 2500)</label>
+            <div class="col-xs-6">
+              <input class="form-control input-sm" id="count" type="number" value="100" min="1" max="2500" step="1">
             </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="col-xs-6 control-label" for="dateOut">Записи опубликованные ранее</label>
-          <div class="col-xs-6">
-            <div class="input-group">
-              <input class="form-control input-sm" id="dateOut" type="text" disabled><span class="input-group-addon">
-                <input id="onDateOut" type="checkbox"></span>
+          <div class="form-group">
+            <label class="col-xs-6 control-label" for="countOut">Количество записей для вывода</label>
+            <div class="col-xs-6">
+              <input class="form-control input-sm" id="countOut" type="number" value="10" min="1" max="2500" step="1">
             </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="col-xs-6 control-label" for="filter">Фильтр</label>
-          <div class="col-xs-6">
-            <select class="form-control input-sm" id="filter">
-              <option value="owner">записи от ее владельца</option>
-              <option value="all">все записи</option>
-              <option value="others">записи не от ее владельца</option>
-            </select>
+          <div class="form-group">
+            <label class="col-xs-6 control-label" for="countOut">Смещение, необходимое для выборки записей</label>
+            <div class="col-xs-6">
+              <input class="form-control input-sm" id="offset" type="number" value="0" min="0" max="2499" step="1">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="col-xs-6 control-label" for="filter">Сортировка</label>
-          <div class="col-xs-6">
-            <select class="form-control input-sm" id="sort">
-              <option value="byLikes">по количеству лайков</option>
-              <option value="byReposts">по количеству репостов</option>
-              <option value="byComments">по количеству комментариев</option>
-              <option value="bySpeed">по скорости набора лайков (1/день)</option>
-              <option value="byTimeAsc">по времени (сначала старые)</option>
-              <option value="byTimeDesc">по времени (сначала новые)</option>
-            </select>
+          <div class="form-group">
+            <label class="col-xs-6 control-label" for="dateIn">Записи опубликованные позже</label>
+            <div class="col-xs-6">
+              <div class="input-group">
+                <input class="form-control input-sm" id="dateIn" type="text" disabled><span class="input-group-addon">
+                  <input id="onDateIn" type="checkbox"></span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="col-xs-6 control-label" for="isContent" title="Отображать текст записей и прикрепления">Отображать контент записей</label>
-          <div class="col-xs-6">
-            <input id="isContent" type="checkbox" checked>
+          <div class="form-group">
+            <label class="col-xs-6 control-label" for="dateOut">Записи опубликованные ранее</label>
+            <div class="col-xs-6">
+              <div class="input-group">
+                <input class="form-control input-sm" id="dateOut" type="text" disabled><span class="input-group-addon">
+                  <input id="onDateOut" type="checkbox"></span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <input class="col-xs-offset-2 col-xs-8 btn btn-primary btn-sm" id="execute" type="button" value="Произвести выборку" disabled>
-        </div>
-      </form>
-      <div id="postsContent"></div>
+          <div class="form-group">
+            <label class="col-xs-6 control-label" for="filter">Фильтр</label>
+            <div class="col-xs-6">
+              <select class="form-control input-sm" id="filter">
+                <option value="owner">записи от ее владельца</option>
+                <option value="all">все записи</option>
+                <option value="others">записи не от ее владельца</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-6 control-label" for="filter">Сортировка</label>
+            <div class="col-xs-6">
+              <select class="form-control input-sm" id="sort">
+                <option value="byLikes">по количеству лайков</option>
+                <option value="byReposts">по количеству репостов</option>
+                <option value="byComments">по количеству комментариев</option>
+                <option value="bySpeed">по скорости набора лайков (1/день)</option>
+                <option value="byTimeAsc">по времени (сначала старые)</option>
+                <option value="byTimeDesc">по времени (сначала новые)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-6 control-label" for="isContent" title="Отображать текст записей и прикрепления">Отображать контент записей</label>
+            <div class="col-xs-6">
+              <input id="isContent" type="checkbox" checked>
+            </div>
+          </div>
+          <div class="form-group">
+            <input class="col-xs-offset-2 col-xs-8 btn btn-primary btn-sm" id="execute" type="button" value="Произвести выборку" disabled>
+          </div>
+        </form>
+        <div id="postsContent"></div>
+      </div>
     </div>
     <script src="//vk.com/js/api/xd_connection.js?2" type="text/javascript"></script>
     <script src="js/jquery.min.js" type="text/javascript"></script>
