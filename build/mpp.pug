@@ -1,0 +1,109 @@
+form.form-horizontal
+    .form-group
+        .input-group(title="Ссылка на группу или страницу")
+            //-.btn-group.input-group-btn
+            //-    label.btn.btn-default
+            //-        input#option1(type="radio" name="options" checked)
+            input#groupID.form-control(type="text" placeholder="ID/ссылка пользователя/сообщества")
+            span.input-group-btn(title="Сбросить поле")
+                button.btn.btn-default(type="button" onclick="$(inpOwner).val('')")
+                    span.glyphicon.glyphicon-remove(aria-hidden="true")
+
+        .input-group(style="margin-top: 7px;" title="Список групп")
+            //-.btn-group.input-group-btn
+            //-    label.btn.btn-default
+            //-        input#option2(type="radio" name="options")
+            select#groups.form-control.input-sm
+            span.input-group-btn(title="Обновить список групп")
+                button.btn.btn-default(type="button" onclick="upd_group_list()")
+                    span.glyphicon.glyphicon-refresh(aria-hidden="true")
+
+        p.help-block
+            | Выберите сообщество из списка или вставьте в поле ID/адрес профиля/сообщества. ID сообщества должен начинаться с "-"
+            | Например: 123456, -654321, http://vk.com/vku, apiclub
+
+        //-.input-group(style="margin-top: 7px;" title="Источники новостей")
+        //-    .btn-group.input-group-btn
+        //-        label.btn.btn-default
+        //-            input#option3(type="radio" name="options")
+        //-    select#sources.form-control.input-sm
+        //-    span.input-group-btn(title="Обновить список групп")
+        //-        button.btn.btn-default(type="button" onclick="upd_sources_list()")
+        //-            span.glyphicon.glyphicon-refresh(aria-hidden="true")
+
+    .form-group
+        label.col-xs-6.control-label(for="count")
+            | Количество записей для поиска (до 2500)
+        .col-xs-6
+            input#count.form-control.input-sm(type="number" value="100" min="1" max="2500" step="1")
+
+    .form-group
+        label.col-xs-6.control-label(for="countOut")
+            | Количество записей для вывода
+        .col-xs-6
+            input#countOut.form-control.input-sm(type="number" value="10" min="1" max="2500" step="1")
+
+    .form-group
+        label.col-xs-6.control-label(for="countOut")
+            | Смещение, необходимое для выборки записей
+        .col-xs-6
+            input#offset.form-control.input-sm(type="number" value="0" min="0" max="2499" step="1")
+
+    .form-group
+        label.col-xs-6.control-label(for="dateIn")
+            | Записи опубликованные позже
+        .col-xs-6
+            .input-group
+                input#dateIn.form-control.input-sm(type="text" disabled)
+                span.input-group-addon
+                    input#onDateIn(type="checkbox")
+
+    .form-group
+        label.col-xs-6.control-label(for="dateOut")
+            | Записи опубликованные ранее
+        .col-xs-6
+            .input-group
+                input#dateOut.form-control.input-sm(type="text" disabled)
+                span.input-group-addon
+                    input#onDateOut(type="checkbox")
+
+    .form-group
+        label.col-xs-6.control-label(for="filter")
+            | Фильтр
+        .col-xs-6
+            select#filter.form-control.input-sm
+                option(value="owner")
+                    | записи от ее владельца
+                option(value="all")
+                    | все записи
+                option(value="others")
+                    | записи не от ее владельца
+
+    .form-group
+        label.col-xs-6.control-label(for="filter")
+            | Сортировка
+        .col-xs-6
+            select#sort.form-control.input-sm
+                option(value="byLikes")
+                    | по количеству лайков
+                option(value="byReposts")
+                    | по количеству репостов
+                option(value="byComments")
+                    | по количеству комментариев
+                option(value="bySpeed")
+                    | по скорости набора лайков (1/день)
+                option(value="byTimeAsc")
+                    | по времени (сначала старые)
+                option(value="byTimeDesc")
+                    | по времени (сначала новые)
+
+    .form-group
+        label.col-xs-6.control-label(for="isContent" title="Отображать текст записей и прикрепления")
+            | Отображать контент записей
+        .col-xs-6
+            input#isContent(type="checkbox" checked)
+
+    .form-group
+        input#execute.col-xs-offset-2.col-xs-8.btn.btn-primary.btn-sm(type="button" value="Произвести выборку" disabled)
+
+#postsContent

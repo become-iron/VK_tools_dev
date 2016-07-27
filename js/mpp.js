@@ -5,7 +5,7 @@ var selGroups = '#groups';
 var inpOwner = '#groupID';
 var btnExec = '#execute';
 var selFilter = '#filter';
-var divPosts = "#posts";  // контейнер для постов
+var divPosts = "#postsContent";  // контейнер для постов
 var inpCount = '#count';  // количество записи для поиска
 var inpCountOut = '#countOut';  // количество записей для вывода
 var inpOffset = '#offset';  // смещение записей
@@ -16,7 +16,7 @@ var inpDateIn = "#dateIn";
 var inpDateOut = "#dateOut";
 var chbOnDateIn = '#onDateIn';
 var chbOnDateOut = '#onDateOut';
-var chbExclPinPost = '#exclPinPost';
+// var chbExclPinPost = '#exclPinPost';
 
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
@@ -83,6 +83,11 @@ function upd_group_list() {
             }
         }
     );
+}
+
+
+function upd_sources_list() {
+    
 }
 
 
@@ -173,7 +178,7 @@ function make_post(post) {
         return (val.length == 1) ? '0' + val : val;
     }
 
-    if ($(chbExclPinPost).prop("checked") && post['is_pinned'] === 1) {return;}  // исключение закреплённой записи
+    // if ($(chbExclPinPost).prop("checked") && post['is_pinned'] === 1) {return;}  // исключение закреплённой записи
 
     // составление даты записи
     var date = new Date(post['date'] * 1000);
@@ -225,7 +230,7 @@ function make_post(post) {
             }
             code += htmlTemplate.blockPhotoEnd;
         }
-        // TODO все записи могут быть заблокированы/удалены
+        // TODO все аудиозаписи могут быть заблокированы/удалены
         if (listAudio.length > 0) {
             // console.log('Аудио: ', listAudio);
             code += htmlTemplate.blockAudioStart;
@@ -336,9 +341,10 @@ $(btnExec).click( function() {
 });
 
 
-// кнопка загрузки дополнительных записей
+// подгрузка дополнительных записей
+// TODO
 VK.callMethod("scrollSubscribe", false);
-VK.addCallback('onScroll', function (scrollTop, windowHeight){
+VK.addCallback('onScroll', function (scrollTop, windowHeight) {
     // console.log(scrollTop, windowHeight, $("html").height());
     if ((posts !== undefined) && ($("html").height() - scrollTop - 429 <= 0)) {
         code = '';
@@ -353,26 +359,6 @@ VK.addCallback('onScroll', function (scrollTop, windowHeight){
         $(divPosts).append(code);
         resize_frame();
     }
-});
-
-// $(btnAddPosts).click( function () {
-//     code = '';
-//     for (var n = 0; n < 10; n++) {
-//         countOut += 1;
-//         if (posts.length <= countOut) {
-//             $(btnAddPosts).css("display", 'none');
-//             break;
-//         }
-//         make_post(posts[countOut]);
-//     }
-//     $(divPosts).append(code);
-//     resize_frame();
-// });
-
-
-// очищение поля для ссылки при выборе группы из выпад. списка
-$(selGroups).change( function() {
-    $(inpOwner).val('');
 });
 
 
