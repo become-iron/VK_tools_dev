@@ -12,7 +12,6 @@ $(document).ready(function () {
 function on_success() {
     console.info('MPP. Инициализация API прошла успешно');
     resize_frame();
-    VK.callMethod("showSettingsBox", 270344);
     // TEMP
     if (tabCode === 'mpp') {
         // получаем список групп юзера
@@ -42,9 +41,13 @@ function is_error(data) {
         return true;
     }
     else if (data['error'] !== undefined) {
+        if (data['error']['error_code'] === 260) {  // не получены ращрешения для приложения
+            VK.callMethod("showSettingsBox", 270344);  // запрос разрешений для приложения (аудио, стена, группы)
+            return false;  // TEMP
+        }
         var txtError = data['error']['error_code'] + ' ' + data['error']['error_msg'];
         alert('Произошла ошибка: ' + txtError);
-        console.error('MPP. Ошибка:', txtError, data);
+        console.error('MPP. Ошибка:', txtError);
 
         // разблокировка кнопки выборки
         $(btnExec).val('Произвести выборку');
