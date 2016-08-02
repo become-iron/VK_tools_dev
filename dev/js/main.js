@@ -11,8 +11,8 @@ $(document).ready(function () {
 
 function on_success() {
     console.info('MPP. Инициализация API прошла успешно');
-    resize_frame();
     VK.callMethod("scrollSubscribe", false);  // подписка на событие onScroll
+    resize_frame();
     // TEMP
     if (tabCode === 'mpp') {
         // получаем список групп юзера
