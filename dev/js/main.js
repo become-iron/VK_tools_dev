@@ -12,9 +12,10 @@ $(document).ready(function () {
 function on_success() {
     console.info('MPP. Инициализация API прошла успешно');
     resize_frame();
-    // получаем список групп юзера
+    VK.callMethod("showSettingsBox", 270344);
     // TEMP
     if (tabCode === 'mpp') {
+        // получаем список групп юзера
         upd_group_list();
     }
     else if (tabCode === 'changes') {
