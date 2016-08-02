@@ -11,11 +11,11 @@
       <div class="form-group">
         <div class="input-group" title="Ссылка на группу или страницу">
           <input class="form-control" id="groupID" type="text" placeholder="ID/ссылка пользователя/сообщества"><span class="input-group-btn" title="Сбросить поле">
-            <button class="btn btn-default" type="button" onclick="$(inpOwner).val('')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></span>
+            <button class="btn btn-default" id="btn-reset-groupID" type="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></span>
         </div>
         <div class="input-group" style="margin-top: 7px" title="Список групп">
           <select class="form-control input-sm" id="groups"></select><span class="input-group-btn" title="Обновить список групп">
-            <button class="btn btn-default" type="button" onclick="upd_group_list()"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></span>
+            <button class="btn btn-default" id="btn-upd-groups" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button></span>
         </div>
         <p class="help-block">Выберите сообщество из списка или вставьте в поле ID/адрес профиля/сообщества. ID сообщества должен начинаться с "-"<br>Например: 123456, -654321, http://vk.com/vku, apiclub</p>
       </div>
@@ -92,7 +92,7 @@
   </div>
 </div>
 <script src="//vk.com/js/api/xd_connection.js?20" type="text/javascript"></script>
-<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/jquery-3.1.0.js" type="text/javascript"></script>
 <script src="js/moment.min.js"></script>
 <script src="js/daterangepicker.js"></script>
 <script src="js/main.js" type="text/javascript"></script>

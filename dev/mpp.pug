@@ -6,7 +6,7 @@ form.form-horizontal
             //-        input#option1(type="radio" name="options" checked)
             input#groupID.form-control(type="text" placeholder="ID/ссылка пользователя/сообщества")
             span.input-group-btn(title="Сбросить поле")
-                button.btn.btn-default(type="button" onclick="$(inpOwner).val('')")
+                button#btn-reset-groupID.btn.btn-default(type="button")
                     span.glyphicon.glyphicon-remove(aria-hidden="true")
 
         .input-group(style="margin-top: 7px;" title="Список групп")
@@ -15,7 +15,7 @@ form.form-horizontal
             //-        input#option2(type="radio" name="options")
             select#groups.form-control.input-sm
             span.input-group-btn(title="Обновить список групп")
-                button.btn.btn-default(type="button" onclick="upd_group_list()")
+                button#btn-upd-groups.btn.btn-default(type="button")
                     span.glyphicon.glyphicon-refresh(aria-hidden="true")
 
         p.help-block
@@ -29,7 +29,7 @@ form.form-horizontal
         //-            input#option3(type="radio" name="options")
         //-    select#sources.form-control.input-sm
         //-    span.input-group-btn(title="Обновить список групп")
-        //-        button.btn.btn-default(type="button" onclick="upd_source_list()")
+        //-        button.btn.btn-default(type="button")
         //-            span.glyphicon.glyphicon-refresh(aria-hidden="true")
 
     .form-group

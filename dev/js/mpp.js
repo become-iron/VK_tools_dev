@@ -17,6 +17,8 @@ var inpDateOut = "#dateOut";
 var chbOnDateIn = '#onDateIn';
 var chbOnDateOut = '#onDateOut';
 // var chbExclPinPost = '#exclPinPost';
+var btnResetGroupID = '#btn-reset-groupID';
+var btnUpdGroups = '#btn-upd-groups';
 
 
 var reLink = /([-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/?[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?)/gi;  // CHECK
@@ -343,8 +345,18 @@ $(btnExec).click( function() {
 });
 
 
+/** Сброс поля с ID группы/пользователя */
+$(btnResetGroupID).click( function () {
+    $(inpOwner).val('');
+});
+
+
+/** Обновить список групп */
+$(btnUpdGroups).click( upd_group_list );
+
+
 // подгрузка дополнительных записей
-// TODO
+// TODO оптимизировать
 VK.addCallback('onScroll', function (scrollTop, windowHeight) {
     // console.log(scrollTop, windowHeight, $("html").height());
     if ((posts !== undefined) && ($('html').height() - scrollTop - 429 <= 0)) {
@@ -365,11 +377,11 @@ VK.addCallback('onScroll', function (scrollTop, windowHeight) {
 
 // КАЛЕНДАРИ
 $(chbOnDateIn).change(function () {
-    $(inpDateIn).prop("disabled", !$(chbOnDateIn).prop("checked"));
+    $(inpDateIn).prop("disabled", !$(this).prop("checked"));
 });
 
 $(chbOnDateOut).change(function () {
-    $(inpDateOut).prop("disabled", !$(chbOnDateOut).prop("checked"));
+    $(inpDateOut).prop("disabled", !$(this).prop("checked"));
 });
 
 var fields = [inpDateIn, inpDateOut];

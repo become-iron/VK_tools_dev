@@ -1,19 +1,26 @@
 .container {
     margin-top: 5px;
 }
-.input-sm,.form-control, .btn {
+.input-sm,
+.form-control,
+.btn {
     height: 30px;
 }
 .form-group {
     padding-right: 1px;
     margin-bottom: 7px;
 }
-.action, .action:hover, .action:active, .action:focus {
+.action,
+.action:hover,
+.action:active,
+.action:focus {
     color: #2F5879;
     background-color: #fff;
     padding: 3px 4px;
 }
-.post-link:hover, .post-link:active, .post-link:focus {
+.post-link:hover,
+.post-link:active,
+.post-link:focus {
     background-color: #E9EDF1;
 }
 .list-group-item {
