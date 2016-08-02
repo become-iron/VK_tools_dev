@@ -11,12 +11,10 @@ var inpCountOut = '#countOut';  // количество записей для в
 var inpOffset = '#offset';  // смещение записей
 var selSort = '#sort';
 var chbIsContent = '#isContent';
-var btnAddPosts = '#btnAddPosts';
 var inpDateIn = "#dateIn";
 var inpDateOut = "#dateOut";
 var chbOnDateIn = '#onDateIn';
 var chbOnDateOut = '#onDateOut';
-// var chbExclPinPost = '#exclPinPost';
 var btnResetGroupID = '#btn-reset-groupID';
 var btnUpdGroups = '#btn-upd-groups';
 
@@ -159,9 +157,6 @@ function display_posts() {
         }
 
         $(divPosts).append($(code));
-        if (posts.length > countOut) {
-            $(btnAddPosts).css("display", 'inline-block');
-        }
     }
     // разблокировка кнопки выборки
     $(btnExec).val('Произвести выборку');
@@ -292,7 +287,9 @@ $(btnExec).click( function() {
 
     // ФОРМИРОВАНИЕ ЗАПРОСА НА ПОЛУЧЕНИЕ ПОСТОВ
     if (count > 100) {
-        _ = (id.length > 0) ? ('owner_id: ' + id) : ('domain: "' + domain + '"');
+        _ = (id.length > 0)
+            ? ('owner_id: ' + id)
+            : ('domain: "' + domain + '"');
         var query = 'var posts;' +
                     'var offset = ' + offset + ';' +
                     'var tmpParam;' +
@@ -363,10 +360,7 @@ VK.addCallback('onScroll', function (scrollTop, windowHeight) {
         code = '';
         for (var n = 0; n < 10; n++) {
             countOut += 1;
-            if (posts.length <= countOut) {
-                $(btnAddPosts).css('display', 'none');
-                break;
-            }
+            if (posts.length <= countOut) {break;}
             make_post(posts[countOut]);
         }
         $(divPosts).append(code);
@@ -391,7 +385,7 @@ for (var i = 0; i < 2; i++) {
         "timePicker": true,
         "timePicker24Hour": true,
         "autoApply": true,
-        "startDate": i===1 ? moment().add(1, 'hour') : moment().subtract(30, 'days'),
+        "startDate": i === 1 ? moment().add(1, 'hour') : moment().subtract(30, 'days'),
         "opens": "left",
         "drops": "up",
         "applyClass": "btn-primary",
