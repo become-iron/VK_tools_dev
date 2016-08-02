@@ -347,12 +347,12 @@ $(btnExec).click( function() {
 // TODO
 VK.addCallback('onScroll', function (scrollTop, windowHeight) {
     // console.log(scrollTop, windowHeight, $("html").height());
-    if ((posts !== undefined) && ($("html").height() - scrollTop - 429 <= 0)) {
+    if ((posts !== undefined) && ($('html').height() - scrollTop - 429 <= 0)) {
         code = '';
         for (var n = 0; n < 10; n++) {
             countOut += 1;
             if (posts.length <= countOut) {
-                $(btnAddPosts).css("display", 'none');
+                $(btnAddPosts).css('display', 'none');
                 break;
             }
             make_post(posts[countOut]);

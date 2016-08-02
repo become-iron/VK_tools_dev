@@ -11,7 +11,7 @@ $(document).ready(function () {
 
 function on_success() {
     console.info('MPP. Инициализация API прошла успешно');
-    VK.callMethod("scrollSubscribe", false);  // подписка на событие onScroll
+    VK.callMethod("scrollSubscribe", false);  // подписка на событие onScroll/**/
     resize_frame();
     // TEMP
     if (tabCode === 'mpp') {
@@ -69,7 +69,7 @@ function is_error(data) {
 
 /** Изменение размера фрейма приложения */
 function resize_frame() {
-    VK.callMethod('resizeWindow', widthFrame, $('.container').height());
+    VK.callMethod('resizeWindow', widthFrame, $('html').height());
 }
 
 
