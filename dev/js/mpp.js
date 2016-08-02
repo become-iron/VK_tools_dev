@@ -86,8 +86,8 @@ function upd_group_list() {
 }
 
 
-function upd_sources_list() {
-    
+function upd_source_list() {
+    // TODO
 }
 
 

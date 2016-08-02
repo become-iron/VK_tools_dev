@@ -1,4 +1,4 @@
-var apiVersion = '5.52';  // используемая версия API VK
+var apiVersion = '5.53';  // используемая версия API VK
 var widthFrame = 630;  // ширина фрейма
 var storage = false;  // доступность localstorage
 
@@ -42,8 +42,10 @@ function is_error(data) {
     }
     else if (data['error'] !== undefined) {
         if (data['error']['error_code'] === 260) {  // не получены ращрешения для приложения
+            alert('Ошибка. Дайте приложению необходимые разрешения, затем повторите запроос');
             VK.callMethod("showSettingsBox", 270344);  // запрос разрешений для приложения (аудио, стена, группы)
-            return false;  // TEMP
+            return true;
+            // TEMP добавить повтор запроса после получения прав?
         }
         var txtError = data['error']['error_code'] + ' ' + data['error']['error_msg'];
         alert('Произошла ошибка: ' + txtError);
