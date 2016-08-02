@@ -12,6 +12,7 @@ $(document).ready(function () {
 function on_success() {
     console.info('MPP. Инициализация API прошла успешно');
     resize_frame();
+    VK.callMethod("scrollSubscribe", false);  // подписка на событие onScroll
     // TEMP
     if (tabCode === 'mpp') {
         // получаем список групп юзера
@@ -29,6 +30,12 @@ function on_fail() {
 }
 
 
+/**
+ * Проверка ответа VK API на наличие ошибки и извещение об этом пользователя
+ * @param {Object} data - ответ API
+ * @param {Object} [data.error] - описание ошибки
+ * @return {boolean} наличие ошибки
+ */
 function is_error(data) {
     // TODO добавить возможность прикрепления сообщения
     // ПРОВЕРКА НА ОШИБКУ
@@ -60,13 +67,14 @@ function is_error(data) {
 }
 
 
+/** Изменение размера фрейма приложения */
 function resize_frame() {
-    // изменение размера фрейма
-    VK.callMethod('resizeWindow', widthFrame, $("html").height());
+    VK.callMethod('resizeWindow', widthFrame, $('.container').height());
 }
 
+
+/** ПРОВЕРКА ПОДДЕРЖКИ БРАУЗЕРОМ WEB STORAGE*/
 function supports_storage() {
-    // ПРОВЕРКА ПОДДЕРЖКИ БРАУЗЕРОМ WEB STORAGE
     try {
         return 'localStorage' in window && window['localStorage'] !== null;
     }
@@ -78,27 +86,19 @@ function supports_storage() {
 }
 
 
+/** ПОЛНАЯ ОЧИСТКА WEB STORAGE */
 function clear_storage() {
-    // ПОЛНАЯ ОЧИСТКА WEB STORAGE
     sessionStorage.clear();
     console.info('Данные приложения в LocalStorage удалены');
 }
 
 
-// реализация метода format для строк
-// http://stackoverflow.com/a/4673436
-if (!String.prototype.format) {
-    String.prototype.format = function() {
-        var args = arguments;
-        return this.replace(/{(\d+)}/g, function(match, number) {
-            return typeof args[number] != 'undefined' ? args[number] : match;
-        } );
-    }
-}
-
-
-// Разность массивов
-// https://habrahabr.ru/post/248229/
+/** Разность массивов
+ * https://habrahabr.ru/post/248229
+ * @param {Array} A
+ * @param {Array} B
+ * @return {Array}
+ */
 function diff(A, B) {
     var M = A.length, N = B.length, c = 0, C = [];
     for (var i = 0; i < M; i++)
@@ -133,3 +133,15 @@ function diff(A, B) {
 //     );
 //     return val;
 // }
+
+
+// реализация метода format для строк
+// http://stackoverflow.com/a/4673436
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != 'undefined' ? args[number] : match;
+        } );
+    }
+}

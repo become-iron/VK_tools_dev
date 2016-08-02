@@ -61,8 +61,8 @@ var htmlTemplate = {
 };
 
 
+/** ОБНОВЛЕНИЯ СПИСКА ГРУПП В ВЫПАДАЮЩЕМ СПИСКЕ */
 function upd_group_list() {
-    // ОБНОВЛЕНИЯ СПИСКА ГРУПП В ВЫПАДАЮЩЕМ СПИСКЕ
     $(btnExec).prop("disabled", true);
     var groups;
     VK.api(
@@ -86,13 +86,13 @@ function upd_group_list() {
 }
 
 
+/** Обновление списка источников новостей в выпадающем списке */
 function upd_source_list() {
     // TODO
 }
 
-
+/** Вывод постов */
 function display_posts() {
-    // ВЫВОД ПОСТОВ
     countOut = Number($(inpCountOut).val());
     typeOfSort = $(selSort).val();  // вид сортировки
     isContent = $(chbIsContent).prop("checked");  // необходимость показа прикреплений
@@ -126,14 +126,16 @@ function display_posts() {
         }
 
         // сортировка записей
-	// TODO
+	    // TODO
         var sorts = {byLikes: ['likes', 'count'],
                      byReposts: ['reposts', 'count'],
                      byComments: ['comments', 'count'],
                      bySpeed: ['speed']};
 	
-        if (typeOfSort === 'byTimeAsc') {posts = posts.reverse();}
-	else if (typeOfSort !== 'byTimeDesc') {
+        if (typeOfSort === 'byTimeAsc') {
+            posts = posts.reverse();
+        }
+	    else if (typeOfSort !== 'byTimeDesc') {
         	posts.sort(function (a, b) {
             	a = sorts[typeOfSort].length === 1 ? a[sorts[typeOfSort][0]] : a[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
             	b = sorts[typeOfSort].length === 1 ? b[sorts[typeOfSort][0]] : b[sorts[typeOfSort][0]][sorts[typeOfSort][1]];
@@ -166,12 +168,12 @@ function display_posts() {
 }
 
 
+/**
+ * ГЕНЕРАЦИЯ HTML-КОДА ДЛЯ ПОСТА
+ * Добавляет HTML-код для вывода постов в глобальную переменную code
+ * @param {object} post - запись
+ */
 function make_post(post) {
-    /* ГЕНЕРАЦИЯ HTML-КОДА ДЛЯ ПОСТА
-    Добавляет HTML-код для вывода постов в глобальную переменную code
-    Принимает:
-        post (object) - запись*/
-
     function zfill(val) {
         // ДОПОЛНЕНИЕ ЧИСЛА НУЛЁМ СЛЕВА ПРИ НЕОБХОДИМОСТИ
         val = String(val);
@@ -194,7 +196,7 @@ function make_post(post) {
                 var str = (/:\/\//.exec(s) === null ? "http://" + s : s );  // CHECK
                 return '<a href="'+ str + '">' + s + '</a>';
             })
-            .replace(/\n/g, '<br/>');
+            .replace(/\n/g, '<br>');
         code +=
             '<p class="list-group-item">' +
             text +
@@ -343,7 +345,6 @@ $(btnExec).click( function() {
 
 // подгрузка дополнительных записей
 // TODO
-VK.callMethod("scrollSubscribe", false);
 VK.addCallback('onScroll', function (scrollTop, windowHeight) {
     // console.log(scrollTop, windowHeight, $("html").height());
     if ((posts !== undefined) && ($("html").height() - scrollTop - 429 <= 0)) {
