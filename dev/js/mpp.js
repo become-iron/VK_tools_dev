@@ -194,7 +194,7 @@ function make_post(post) {
                 var str = (/:\/\//.exec(s) === null ? "http://" + s : s );  // CHECK
                 return '<a href="'+ str + '">' + s + '</a>';
             })
-            .replace(/\n/g, '<br>');
+            .replace(/\n/g, '<br/>');
         code +=
             '<p class="list-group-item">' +
             text +
